@@ -35,7 +35,7 @@ export async function handle(req, store, env) {
     const ctrl = await store.getCtrl();
     return json(
       200,
-      { polls: POLLS, ctrl, storage: store.kind },
+      { polls: POLLS, ctrl, storage: store.kind, pinConfigured: Boolean(env.MASTER_PIN), version: "2" },
       {
         "cache-control": "public, max-age=0, s-maxage=1",
         "netlify-cdn-cache-control": "public, max-age=0, s-maxage=1",
