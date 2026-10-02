@@ -6,6 +6,9 @@ const sharp = require("sharp");
 const fa = require("react-icons/fa");
 const { applyTheme } = require("/root/.claude/skills/synced/dcf963bb-9c61-46f5-bef2-39592a3aa903_876e3daa-0869-4ab9-88ef-368b44a1e9ef/pptx/scripts/apply_theme.js");
 
+const QRCode = require("qrcode");
+const POLL_URL = "https://claude.ai/artifact/GjZziNBVD3syivLtybZ2rT";
+const POLL_SHORT = "claude.ai/artifact/GjZziNBVD3syivLtybZ2rT";
 const OUT = path.join(__dirname, "..", "Prezentare_MPS.pptx");
 const ASSETS = path.join(__dirname, "assets");
 
@@ -150,6 +153,20 @@ function promptBar(s, label, text, y) {
   });
 }
 
+let QR_DATA = null;
+
+function pollBar(s, n, text, y) {
+  s.addShape(SH.roundRect, { x: MX, y, w: 9, h: 0.8, rectRadius: 0.1, fill: { color: C.text1 }, line: { color: C.text1, width: 0 }, objectName: "Bara poll" });
+  s.addText([{ text: "POLL", options: { bold: true, fontSize: 12, breakLine: true } }, { text: "Întrebarea " + n, options: { fontSize: 10 } }], {
+    x: MX + 0.2, y, w: 1.3, h: 0.8, color: C.accent1, valign: "middle", margin: 0, isTextBox: true, objectName: "Eticheta poll",
+  });
+  s.addText([{ text, options: { fontSize: 13, breakLine: true } }, { text: "Scanează codul sau deschide " + POLL_SHORT, options: { fontSize: 9, color: C.accent6 } }], {
+    x: MX + 1.55, y, w: 6.2, h: 0.8, color: C.background1, valign: "middle", margin: 0, isTextBox: true, objectName: "Text poll",
+  });
+  s.addShape(SH.roundRect, { x: MX + 8.0, y: y + 0.05, w: 0.7, h: 0.7, rectRadius: 0.05, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR" });
+  s.addImage({ data: QR_DATA, x: MX + 8.03, y: y + 0.08, w: 0.64, h: 0.64, objectName: "Cod QR poll" });
+}
+
 function chartFonts() {
   return {
     catAxisLabelFontFace: "+mn-lt",
@@ -161,6 +178,7 @@ function chartFonts() {
 }
 
 async function build() {
+  QR_DATA = "image/png;base64," + (await QRCode.toDataURL(POLL_URL, { margin: 0, width: 400, errorCorrectionLevel: "M" })).split(",")[1];
   const ic = {};
   const need = {
     cloud: ["FaCloud", H.lt1], sliders: ["FaSlidersH", H.lt1], finger: ["FaFingerprint", H.lt1],
@@ -178,7 +196,7 @@ async function build() {
   };
   for (const [k, [n, hex]] of Object.entries(need)) ic[k] = await icon(n, hex);
   const icDark = {
-    users: await icon("FaUsers", H.dk1), code: await icon("FaCode", H.dk1), vote: await icon("FaHandPaper", H.dk1),
+    bulb: await icon("FaLightbulb", H.dk1),
   };
 
   pres.addSection({ title: "Deschidere" });
@@ -192,57 +210,12 @@ async function build() {
     txt(s, "De la Gantt și drumul critic la stakeholderi: ce face un proiect software să reușească", {
       x: 0.6, y: 2.6, w: 6.3, h: 0.9, fontSize: 18, color: C.background2,
     });
-    card(s, 0.6, 3.9, 2.4, 0.8, C.accent4, "Card prezentator A");
-    txt(s, [{ text: "Prezentator A", options: { bold: true, fontSize: 14, breakLine: true } }, { text: "Context · Istorie · CPM/PERT", options: { fontSize: 11 } }], {
-      x: 0.75, y: 3.9, w: 2.2, h: 0.8, color: C.background1, valign: "middle",
-    });
-    card(s, 3.2, 3.9, 2.4, 0.8, C.accent2, "Card prezentator B");
-    txt(s, [{ text: "Prezentator B", options: { bold: true, fontSize: 14, breakLine: true } }, { text: "Proiecte · Stakeholderi · PM", options: { fontSize: 11 } }], {
-      x: 3.35, y: 3.9, w: 2.2, h: 0.8, color: C.background1, valign: "middle",
-    });
-    txt(s, "25 minute · interactiv · cu dezbatere", { x: 6.0, y: 3.9, w: 3.4, h: 0.8, fontSize: 13, color: C.accent1, bold: true, valign: "middle" });
     s.addNotes(
       "A (30s). Salut. Deschidem cu o provocare: poți scrie cod impecabil și totuși să pierzi proiectul. Pe parcursul a 25 de minute vom avea 3 voturi rapide, 2 mini-exerciții și o dezbatere în două tabere. Rugăm sala să participe: nu vorbim doar noi.\n" +
         "Sursa conținutului: cursurile G-C01.00 (Introducere) și G-C01.01 (Proiecte și Stakeholderi)."
     );
   }
 
-  {
-    const s = lightSlide("Cum folosim cele 25 de minute", "AB", "1'", "Deschidere",
-      "A (1 min). Arătăm harta: 5 blocuri, schimbăm prezentatorul la jumătate. Explicăm regulile jocului: la voturi ridicăm mâna, la exerciții lucrăm 2 minute în perechi, la dezbatere împărțim sala în două tabere (stânga/dreapta). Notă: dacă timpul se strânge, tăiem exercițiul de pe slide 16 și păstrăm matricea.");
-    const blocks = [
-      { l: "Hook", m: 3, w: "A" },
-      { l: "Istorie: de la Gantt la PERT", m: 9, w: "A" },
-      { l: "Proiecte", m: 5, w: "B" },
-      { l: "Stakeholderi", m: 5, w: "B" },
-      { l: "Dezbatere", m: 3, w: "AB" },
-    ];
-    let x = MX;
-    const k = 9 / 25;
-    blocks.forEach((b) => {
-      const bw = b.m * k;
-      const wc = WHO[b.w];
-      s.addShape(SH.rect, { x, y: 1.5, w: bw - 0.04, h: 1.0, fill: { color: wc.fill }, line: { color: wc.fill, width: 0 }, objectName: "Bloc agenda " + b.l });
-      txt(s, [{ text: b.m + "'", options: { bold: true, fontSize: 20, breakLine: true } }, { text: b.l, options: { fontSize: b.m > 4 ? 12 : 10 } }], {
-        x: x + 0.08, y: 1.5, w: bw - 0.2, h: 1.0, color: wc.text, valign: "middle",
-      });
-      x += bw;
-    });
-    txt(s, "Minut 0", { x: MX, y: 2.6, w: 1, h: 0.25, fontSize: 10, color: C.text2 });
-    txt(s, "Minut 25", { x: 8.5, y: 2.6, w: 1, h: 0.25, fontSize: 10, color: C.text2, align: "right" });
-    const fm = [
-      { i: ic.vote, t: "3 voturi rapide", d: "Mâna sus: alegeți o variantă, apoi justificăm", c: C.accent4 },
-      { i: ic.lightbulb, t: "2 mini-exerciții", d: "Drum critic și identificare de stakeholderi, câte 2 minute", c: C.accent2 },
-      { i: ic.comments, t: "O dezbatere", d: "Două tabere, trei teze, argumente cu exemple reale", c: C.accent3 },
-    ];
-    fm.forEach((f, i) => {
-      const cx = MX + i * 3.05;
-      card(s, cx, 3.25, 2.9, 1.7, C.background2, "Card format " + (i + 1));
-      circleIcon(s, f.i, cx + 0.2, 3.45, 0.55, f.c, "Icon format " + (i + 1));
-      txt(s, f.t, { x: cx + 0.2, y: 4.1, w: 2.5, h: 0.3, fontSize: 14, bold: true });
-      txt(s, f.d, { x: cx + 0.2, y: 4.4, w: 2.55, h: 0.5, fontSize: 11, color: C.text2 });
-    });
-  }
 
   {
     const s = lightSlide("Cod impecabil, proiect pierdut?", "A", "2'", "Deschidere",
@@ -254,13 +227,13 @@ async function build() {
     ];
     cs.forEach((c, i) => {
       const cx = MX + i * 3.05;
-      card(s, cx, 1.3, 2.9, 2.7, C.background2, "Card scenariu " + c.n);
+      card(s, cx, 1.2, 2.9, 2.85, C.background2, "Card scenariu " + c.n);
       circleIcon(s, c.i, cx + 0.2, 1.5, 0.7, c.c, "Icon scenariu " + c.n);
       txt(s, c.n, { x: cx + 2.2, y: 1.45, w: 0.55, h: 0.7, fontSize: 40, bold: true, color: C.accent6, align: "right" });
       txt(s, c.t, { x: cx + 0.2, y: 2.4, w: 2.5, h: 0.35, fontSize: 15, bold: true });
       txt(s, c.d, { x: cx + 0.2, y: 2.8, w: 2.5, h: 1.1, fontSize: 12, color: C.text2 });
     });
-    promptBar(s, "VOT RAPID", "Care dintre cele trei strică cele mai multe proiecte reale? Mâna sus: 1, 2 sau 3.", 4.3);
+    pollBar(s, 1, "Care dintre cele trei strică cele mai multe proiecte reale?", 4.25);
   }
 
   {
@@ -318,7 +291,7 @@ async function build() {
   {
     const s = lightSlide("Taylor vs. Gantt: control sau încredere?", "A", "2'", "Istorie",
       "A (2 min), prima DEZBATERE scurtă. Taylor (începutul anilor 1900) pornește de la o viziune negativă: muncitorii în sarcini repetitive lucrează la minimul necesar. Contribuții reale: definirea științifică a muncii, selecția personalului, separarea responsabilităților, stimulente și pauze. Gantt (Primul Război Mondial) introduce vizualizarea planului și a progresului. ÎNTREBARE: sistemele moderne de time tracking și KPI sunt Taylor în variantă digitală? Luăm 2 opinii pro și 2 contra, apoi legăm de Gantt: vizibilitatea poate fi și instrument de colaborare, nu doar de control.");
-    card(s, MX, 1.25, 4.4, 3.1, C.background2, "Card Taylor");
+    card(s, MX, 1.2, 4.4, 2.95, C.background2, "Card Taylor");
     s.addImage({ path: path.join(ASSETS, "taylor.png"), x: MX + 0.2, y: 1.45, w: 0.95, h: 1.72, objectName: "Foto Taylor" });
     txt(s, [{ text: "F. W. Taylor", options: { bold: true, fontSize: 16, breakLine: true } }, { text: "Scientific Management, anii 1900", options: { fontSize: 11, color: C.text2 } }], { x: MX + 1.35, y: 1.45, w: 2.9, h: 0.7 });
     txt(s, [
@@ -327,7 +300,7 @@ async function build() {
       { text: "Stimulente și perioade de odihnă", options: { bullet: true, breakLine: true } },
       { text: "Premisă: omul lucrează la minim dacă nu e controlat", options: { bullet: true } },
     ], { x: MX + 1.35, y: 2.25, w: 2.9, h: 1.9, fontSize: 13, paraSpaceAfter: 5 });
-    card(s, 5.1, 1.25, 4.4, 3.1, C.background2, "Card Gantt");
+    card(s, 5.1, 1.2, 4.4, 2.95, C.background2, "Card Gantt");
     s.addImage({ path: path.join(ASSETS, "gantt.png"), x: 5.3, y: 1.45, w: 1.2, h: 1.4, objectName: "Foto Gantt" });
     txt(s, [{ text: "Henry Gantt", options: { bold: true, fontSize: 16, breakLine: true } }, { text: "Diagrama Gantt, Primul Război Mondial", options: { fontSize: 11, color: C.text2 } }], { x: 6.7, y: 1.45, w: 2.7, h: 0.7 });
     txt(s, [
@@ -335,8 +308,8 @@ async function build() {
       { text: "Distinge munca planificată de progres", options: { bullet: true, breakLine: true } },
       { text: "Folosită și azi în planificare", options: { bullet: true } },
     ], { x: 6.7, y: 2.25, w: 2.7, h: 1.5, fontSize: 13, paraSpaceAfter: 5 });
-    txt(s, "Instrumentul lui Gantt la lucru în șantierele navale", { x: 5.3, y: 3.75, w: 4.0, h: 0.4, fontSize: 10, color: C.text2, italic: true });
-    promptBar(s, "DEZBATERE", "Time tracking-ul și KPI-urile de azi sunt Taylor în variantă digitală? Da sau nu?", 4.55);
+    txt(s, "Instrumentul lui Gantt la lucru în șantierele navale", { x: 5.3, y: 3.65, w: 4.0, h: 0.4, fontSize: 10, color: C.text2, italic: true });
+    pollBar(s, 2, "Time tracking-ul și KPI-urile de azi sunt Taylor în variantă digitală?", 4.3);
   }
 
   {
@@ -376,49 +349,33 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Mini-exercițiu: găsiți drumul critic", "A", "3'", "Istorie",
-      "A (3 min), EXERCIȚIU INTERACTIV. Dăm 60-90 secunde sălii să adune duratele pe fiecare cale. Întrebarea din curs: 'Ce activități pot întârzia finalizarea proiectului?'. Soluție: calea A-B-D-F = 3+4+5+2 = 14 zile; calea A-C-E-F = 3+2+3+2 = 10 zile. Drumul critic este A-B-D-F (nicio zi de rezervă). C și E au slack de 4 zile. Valori ES/EF afișate pe noduri (ES = start cel mai devreme, EF = final cel mai devreme). Observații: (1) CPM (1957) e determinist, o singură estimare per activitate. (2) PERT (1958) folosește 3 estimări: (O + 4M + P) / 6. (3) Dacă 'comprimăm' B cu 2 zile, drumul critic poate să se mute pe A-C-E-F? Nu: A-B-D-F ar deveni 12, iar A-C-E-F rămâne 10, deci același drum rămâne critic. Dacă comprimăm cu 5 zile, devine 9 și se schimbă drumul. Bonus pentru discuție.");
-    txt(s, "Fiecare nod: activitate · durată (zile) · ES/EF. Care este drumul cu durata cea mai mare?", { x: MX, y: 0.95, w: 9, h: 0.3, fontSize: 12, color: C.text2 });
-    const nw = 1.5;
-    const nh = 0.85;
-    const cols = [0.5, 2.75, 5.0, 7.25];
-    const nodes = {
-      A: { x: cols[0], y: 2.4, d: 3, es: 0, ef: 3, crit: true },
-      B: { x: cols[1], y: 1.5, d: 4, es: 3, ef: 7, crit: true },
-      C: { x: cols[1], y: 3.3, d: 2, es: 3, ef: 5, crit: false },
-      D: { x: cols[2], y: 1.5, d: 5, es: 7, ef: 12, crit: true },
-      E: { x: cols[2], y: 3.3, d: 3, es: 5, ef: 8, crit: false },
-      F: { x: cols[3], y: 2.4, d: 2, es: 12, ef: 14, crit: true },
+    const s = lightSlide("Ce întârzie lansarea aplicației?", "A", "3'", "Istorie",
+      "A (3 min), EXERCIȚIU INTERACTIV, varianta simplă a drumului critic. Povestim: avem o aplicație de lansat. Cerințele durează 3 zile. Apoi lucrează în paralel două echipe: Backend (4 zile) urmat de API (5 zile) = 9 zile, și Design (2 zile) urmat de Frontend (3 zile) = 5 zile. La final, testarea și lansarea durează 2 zile și pot începe doar când AMBELE linii sunt gata. Total: 3 + 9 + 2 = 14 zile. Linia Backend + API este cea mai lungă, deci decide data lansării: este DRUMUL CRITIC. Linia Design + Frontend așteaptă 4 zile, adică are rezervă (slack) de 4 zile. Întrebări către sală: 1) Dacă Frontend-ul întârzie 2 zile, se amână lansarea? (Nu, are 4 zile rezervă.) 2) Dacă Backend-ul întârzie 2 zile? (Da, lansarea trece la 16 zile.) Legătura istorică: asta au rezolvat CPM (1957) și PERT (1958): arată ce activități nu au voie să întârzie. PERT folosește 3 estimări (optimist, probabil, pesimist) în loc de una.");
+    txt(s, "Două echipe lucrează în paralel. Lungimea fiecărei bare este durata în zile.", { x: MX, y: 0.95, w: 9, h: 0.3, fontSize: 12, color: C.text2 });
+    const u = 0.62;
+    const x0 = MX;
+    const bx = (d) => x0 + d * u;
+    s.addShape(SH.line, { x: bx(0), y: 1.45, w: bx(14) - bx(0), h: 0, line: { color: C.accent6, width: 1 }, objectName: "Axa zile" });
+    [0, 3, 7, 12, 14].forEach((d) => {
+      txt(s, d + (d === 0 ? " zile" : ""), { x: bx(d) - 0.4, y: 1.2, w: 0.8, h: 0.22, fontSize: 9, color: C.text2, align: "center" });
+    });
+    const blk = (x, y, w, h, fill, label, sub, name) => {
+      s.addShape(SH.roundRect, { x, y, w: w - 0.04, h, rectRadius: 0.08, fill: { color: fill }, line: { color: fill, width: 0 }, objectName: name });
+      txt(s, [{ text: label, options: { bold: true, fontSize: 12, breakLine: true } }, { text: sub, options: { fontSize: 10 } }], { x, y, w: w - 0.04, h, color: C.background1, align: "center", valign: "middle" });
     };
-    const edges = [["A", "B"], ["A", "C"], ["B", "D"], ["C", "E"], ["D", "F"], ["E", "F"]];
-    edges.forEach(([a, b]) => {
-      const na = nodes[a];
-      const nb = nodes[b];
-      const x1 = na.x + nw;
-      const y1 = na.y + nh / 2;
-      const x2 = nb.x;
-      const y2 = nb.y + nh / 2;
-      const crit = na.crit && nb.crit;
-      const opts = {
-        x: x1, y: Math.min(y1, y2), w: x2 - x1, h: Math.abs(y2 - y1),
-        line: { color: crit ? C.accent3 : C.accent6, width: crit ? 3 : 1.5, endArrowType: "triangle" },
-        objectName: `Sageata ${a}-${b}`,
-      };
-      if (y2 < y1) opts.flipV = true;
-      s.addShape(SH.line, opts);
-    });
-    Object.entries(nodes).forEach(([k, n]) => {
-      const fill = n.crit ? C.accent3 : C.accent4;
-      s.addShape(SH.roundRect, { x: n.x, y: n.y, w: nw, h: nh, rectRadius: 0.1, fill: { color: fill }, line: { color: fill, width: 0 }, objectName: "Nod " + k });
-      txt(s, [
-        { text: `${k}  ·  ${n.d} zile`, options: { bold: true, fontSize: 14, breakLine: true } },
-        { text: `ES ${n.es}  ·  EF ${n.ef}`, options: { fontSize: 11 } },
-      ], { x: n.x, y: n.y, w: nw, h: nh, color: C.background1, align: "center", valign: "middle" });
-    });
-    card(s, MX, 4.4, 4.4, 0.75, C.background2, "Card rezultat critic");
-    txt(s, [{ text: "Drum critic: ", options: { bold: true, color: C.accent3 } }, { text: "A → B → D → F = 14 zile, fără rezervă", options: {} }], { x: MX + 0.15, y: 4.4, w: 4.2, h: 0.75, fontSize: 13, valign: "middle" });
-    card(s, 5.1, 4.4, 4.4, 0.75, C.background2, "Card rezultat slack");
-    txt(s, [{ text: "Slack: ", options: { bold: true, color: C.accent4 } }, { text: "C și E pot întârzia 4 zile fără efect", options: {} }], { x: 5.25, y: 4.4, w: 4.2, h: 0.75, fontSize: 13, valign: "middle" });
+    blk(bx(0), 1.6, 3 * u, 1.9, C.accent4, "Cerințe", "3 zile", "Bloc cerinte");
+    blk(bx(3), 1.6, 4 * u, 0.85, C.accent3, "Backend", "4 zile", "Bloc backend");
+    blk(bx(7), 1.6, 5 * u, 0.85, C.accent3, "API", "5 zile", "Bloc API");
+    blk(bx(3), 2.65, 2 * u, 0.85, C.accent2, "Design", "2 zile", "Bloc design");
+    blk(bx(5), 2.65, 3 * u, 0.85, C.accent2, "Frontend", "3 zile", "Bloc frontend");
+    s.addShape(SH.roundRect, { x: bx(8), y: 2.65, w: 4 * u - 0.04, h: 0.85, rectRadius: 0.08, fill: { color: C.background2 }, line: { color: C.accent6, width: 1, dashType: "dash" }, objectName: "Bloc asteptare" });
+    txt(s, [{ text: "Așteaptă 4 zile", options: { bold: true, fontSize: 12, breakLine: true } }, { text: "rezervă (slack)", options: { fontSize: 10 } }], { x: bx(8), y: 2.65, w: 4 * u - 0.04, h: 0.85, color: C.text2, align: "center", valign: "middle" });
+    blk(bx(12), 1.6, 2 * u, 1.9, C.accent5, "Testare + lansare", "2 zile", "Bloc lansare");
+    card(s, MX, 3.75, 4.4, 0.6, C.background2, "Card drum critic");
+    txt(s, [{ text: "Drum critic: ", options: { bold: true, color: C.accent3 } }, { text: "Backend + API, cel mai lung traseu (9 zile)", options: {} }], { x: MX + 0.15, y: 3.75, w: 4.2, h: 0.6, fontSize: 12, valign: "middle" });
+    card(s, 5.1, 3.75, 4.4, 0.6, C.background2, "Card rezerva");
+    txt(s, [{ text: "Rezervă: ", options: { bold: true, color: C.accent2 } }, { text: "Design + Frontend pot întârzia până la 4 zile", options: {} }], { x: 5.25, y: 3.75, w: 4.2, h: 0.6, fontSize: 12, valign: "middle" });
+    promptBar(s, "ÎNTREBARE", "Dacă Frontend-ul întârzie 2 zile, se amână lansarea? Dar dacă întârzie Backend-ul?", 4.5);
   }
 
   {
@@ -438,10 +395,12 @@ async function build() {
     txt(s, [{ text: "Mai mulți oameni într-un proiect software întârziat îl întârzie și mai mult.", options: { italic: true, fontSize: 12, breakLine: true } }, { text: "F. Brooks, The Mythical Man-Month", options: { fontSize: 10, color: C.text2 } }], { x: 7.35, y: 1.3, w: 2.15, h: 1.3 });
     card(s, 6.4, 2.85, 3.1, 2.05, C.text1, "Card dezbatere Brooks");
     txt(s, [
-      { text: "DEZBATERE", options: { bold: true, fontSize: 11, color: C.accent1, breakLine: true } },
-      { text: "Mai e valabilă legea lui Brooks cu microservicii, documentație bună și tool-uri moderne?", options: { fontSize: 13, color: C.background1, breakLine: true } },
-      { text: "Stânga: da   ·   Dreapta: nu", options: { fontSize: 11, bold: true, color: C.accent1 } },
-    ], { x: 6.6, y: 3.0, w: 2.75, h: 1.8, paraSpaceAfter: 6 });
+      { text: "POLL · ÎNTREBAREA 3", options: { bold: true, fontSize: 11, color: C.accent1, breakLine: true } },
+      { text: "Mai e valabilă legea lui Brooks cu tool-uri și practici moderne?", options: { fontSize: 13, color: C.background1 } },
+    ], { x: 6.6, y: 3.0, w: 2.75, h: 1.0, paraSpaceAfter: 6 });
+    s.addShape(SH.roundRect, { x: 8.45, y: 4.05, w: 0.7, h: 0.7, rectRadius: 0.05, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR" });
+    s.addImage({ data: QR_DATA, x: 8.48, y: 4.08, w: 0.64, h: 0.64, objectName: "Cod QR poll" });
+    txt(s, "Votați cu codul QR", { x: 6.6, y: 4.2, w: 1.7, h: 0.4, fontSize: 10, color: C.accent6 });
   }
 
   pres.addSection({ title: "Proiecte" });
@@ -465,35 +424,36 @@ async function build() {
       txt(s, c.d, { x: cx + 0.15, y: 3.2, w: 1.9, h: 0.6, fontSize: 10.5, color: C.text2 });
     });
     s.addImage({ path: path.join(ASSETS, "lifecycle.png"), x: 5.4, y: 4.0, w: 2.2, h: 1.26, objectName: "Ciclu de viata proiect" });
-    txt(s, [{ text: "Întrebare: ", options: { bold: true, color: C.accent3 } }, { text: "dacă un proiect e temporar, de ce un sistem software livrat durează ani de zile?", options: {} }], { x: MX, y: 4.1, w: 4.7, h: 0.9, fontSize: 13, valign: "middle" });
+    txt(s, [{ text: "Întrebare: ", options: { bold: true, color: C.accent3 } }, { text: "echipa lansează aplicația, iar ea rămâne în folosință ani de zile. Proiectul s-a încheiat la lansare? Ce urmează după?", options: {} }], { x: MX, y: 4.1, w: 4.7, h: 0.9, fontSize: 13, valign: "middle" });
     txt(s, "Ciclul de viață al proiectului", { x: 7.7, y: 4.4, w: 1.8, h: 0.5, fontSize: 10, italic: true, color: C.text2 });
   }
 
   {
-    const s = lightSlide("Proiect sau operațional? Votați!", "B", "2'", "Proiecte",
-      "B (2 min), VOT RAPID pe fiecare element (P = proiect, O = operațional). Răspunsuri sugerate: Pregătirea cinei: O dacă e rutină zilnică, P dacă e un banchet unic. Fabricarea unei mașini: O (producție în serie). Design-ul unei mașini: P. Redactarea unui articol: P. Dezvoltarea unui sistem software: P. Menținerea unui sistem software: O (dar o versiune majoră poate fi tratată ca proiect). Managementul personalului: O. Ideea: ambele sunt făcute de oameni, cu resurse limitate, planificate, executate și controlate. Diferența: proiectul urmărește un obiectiv și se încheie; operațiunile susțin business-ul. Insistați pe cazurile de graniță: acolo apare discuția.");
+    const s = lightSlide("Proiect sau operațional?", "B", "2'", "Proiecte",
+      "B (2 min). Pentru fiecare exemplu spunem ce reprezintă. Pregătirea cinei: depinde, un banchet unic e proiect, masa zilnică e operațional. Fabricarea unei mașini: operațional (producție în serie, repetitivă). Design-ul unei mașini: proiect (rezultat unic, cu final). Redactarea unui articol: proiect (un rezultat unic, cu termen). Dezvoltarea unui sistem software: proiect. Menținerea unui sistem software: operațional (susține activitatea continuu; o versiune majoră poate fi tratată ca un nou proiect). Managementul personalului: operațional. Ideea: ambele sunt făcute de oameni, cu resurse limitate, planificate, executate și controlate. Diferența: proiectul urmărește un obiectiv și se încheie, operațiunile susțin business-ul. Putem cere sălii întâi părerea, apoi arătăm ce scrie pe slide.");
     const ex = [
-      { t: "Pregătirea cinei", i: ic.office },
-      { t: "Fabricarea unei mașini", i: ic.cogs },
-      { t: "Design-ul unei mașini", i: ic.lightbulb },
-      { t: "Redactarea unui articol", i: ic.fileSig },
-      { t: "Dezvoltarea unui sistem software", i: ic.code },
-      { t: "Menținerea unui sistem software", i: ic.tools },
-      { t: "Managementul personalului", i: ic.team },
+      { t: "Pregătirea cinei", i: ic.office, v: "DEPINDE", c: C.accent6, d: "Banchet unic: proiect. Masă zilnică: operațional" },
+      { t: "Fabricarea unei mașini", i: ic.cogs, v: "OPERAȚIONAL", c: C.accent3, d: "Producție în serie, se repetă" },
+      { t: "Design-ul unei mașini", i: ic.lightbulb, v: "PROIECT", c: C.accent2, d: "Rezultat unic, are început și sfârșit" },
+      { t: "Redactarea unui articol", i: ic.fileSig, v: "PROIECT", c: C.accent2, d: "Un rezultat unic, cu termen limită" },
+      { t: "Dezvoltarea unui sistem software", i: ic.code, v: "PROIECT", c: C.accent2, d: "Produs unic, se încheie la livrare" },
+      { t: "Menținerea unui sistem software", i: ic.tools, v: "OPERAȚIONAL", c: C.accent3, d: "Susține activitatea, nu se termină" },
+      { t: "Managementul personalului", i: ic.team, v: "OPERAȚIONAL", c: C.accent3, d: "Activitate continuă a organizației" },
     ];
     ex.forEach((e, k) => {
       const col = k % 4;
       const row = Math.floor(k / 4);
       const cx = MX + col * 2.28;
-      const cy = 1.25 + row * 1.35;
-      card(s, cx, cy, 2.15, 1.2, C.background2, "Card exemplu " + (k + 1));
-      circleIcon(s, e.i, cx + 0.15, cy + 0.15, 0.5, [C.accent4, C.accent2, C.accent5, C.accent3][k % 4], "Icon exemplu " + (k + 1));
-      txt(s, String(k + 1), { x: cx + 1.5, y: cy + 0.1, w: 0.5, h: 0.5, fontSize: 24, bold: true, color: C.accent6, align: "right" });
-      txt(s, e.t, { x: cx + 0.15, y: cy + 0.72, w: 1.9, h: 0.45, fontSize: 11.5, bold: true });
+      const cy = 1.2 + row * 1.65;
+      card(s, cx, cy, 2.15, 1.55, C.background2, "Card exemplu " + (k + 1));
+      circleIcon(s, e.i, cx + 0.12, cy + 0.12, 0.45, [C.accent4, C.accent2, C.accent5, C.accent3][k % 4], "Icon exemplu " + (k + 1));
+      s.addShape(SH.roundRect, { x: cx + 0.7, y: cy + 0.18, w: 1.35, h: 0.28, rectRadius: 0.14, fill: { color: e.c }, line: { color: e.c, width: 0 }, objectName: "Verdict " + (k + 1) });
+      txt(s, e.v, { x: cx + 0.7, y: cy + 0.18, w: 1.35, h: 0.28, fontSize: 10, bold: true, color: C.background1, align: "center", valign: "middle" });
+      txt(s, e.t, { x: cx + 0.12, y: cy + 0.68, w: 1.95, h: 0.4, fontSize: 11, bold: true });
+      txt(s, e.d, { x: cx + 0.12, y: cy + 1.08, w: 1.95, h: 0.42, fontSize: 10, color: C.text2 });
     });
-    card(s, MX + 3 * 2.28, 2.6, 2.15, 1.2, C.text1, "Card legenda vot");
-    txt(s, [{ text: "P = proiect", options: { bold: true, color: C.accent1, breakLine: true } }, { text: "O = operațional", options: { bold: true, color: C.background1, breakLine: true } }, { text: "Mâna sus la fiecare", options: { fontSize: 10, color: C.accent6 } }], { x: MX + 3 * 2.28 + 0.15, y: 2.6, w: 1.9, h: 1.2, fontSize: 13, valign: "middle" });
-    promptBar(s, "ÎN COMUN", "Oameni, resurse limitate, planificare și control. Diferă ținta: finalizare vs. susținerea business-ului.", 4.2);
+    card(s, MX + 3 * 2.28, 2.85, 2.15, 1.55, C.text1, "Card legenda");
+    txt(s, [{ text: "În comun", options: { bold: true, color: C.accent1, breakLine: true } }, { text: "oameni, resurse limitate, planificare și control", options: { color: C.background1, fontSize: 11, breakLine: true } }, { text: "Diferă ținta", options: { bold: true, color: C.accent1, breakLine: true } }, { text: "finalizare vs. susținerea business-ului", options: { color: C.background1, fontSize: 11 } }], { x: MX + 3 * 2.28 + 0.12, y: 2.85, w: 1.95, h: 1.55, fontSize: 12, valign: "middle", paraSpaceAfter: 2 });
   }
 
   {
@@ -515,7 +475,7 @@ async function build() {
 
   {
     const s = lightSlide("Cinci tipuri de proiecte software", "B", "1,5'", "Proiecte",
-      "B (1,5 min). A: dezvoltare de aplicații (one-off, off-the-shelf, off-the-shelf customizat precum ERP). B: reingineria proceselor și sistemelor, ample, cer analiza situației existente, de obicei cu ERP. C: integrarea sistemelor, orizontală (sisteme similare) sau verticală (etape diferite ale unei proceduri). D: consultanță, expertiză adusă din exterior. E: instalare și training, sursă de venit și în open source. Întrebare: în ce categorie intră proiectul vostru de la facultate? Dar migrarea unei firme de la Excel la un ERP?");
+      "B (1,5 min). A: dezvoltare de aplicații (one-off, off-the-shelf, off-the-shelf customizat precum ERP). B: reingineria proceselor și sistemelor, ample, cer analiza situației existente, de obicei cu ERP. C: integrarea sistemelor, orizontală (sisteme similare) sau verticală (etape diferite ale unei proceduri). D: consultanță, expertiză adusă din exterior. E: instalare și training, sursă de venit și în open source. ÎNTREBARE către sală: la ce categorie intră un proiect personal pe care îl aveți sau l-ați avut? Luăm 2-3 răspunsuri. Exemple de ghidaj: o aplicație făcută pentru facultate (A), migrarea unei firme de la Excel la un ERP (B), conectarea a două sisteme (C).");
     const types = [
       { l: "A", t: "Dezvoltare de aplicații", d: "One-off, off-the-shelf sau off-the-shelf customizat (ERP)", i: ic.code, c: C.accent4 },
       { l: "B", t: "Reingineria proceselor", d: "Schimbi modul de lucru al organizației; analiză amplă; adesea cu ERP", i: ic.sync, c: C.accent3 },
@@ -524,27 +484,27 @@ async function build() {
       { l: "E", t: "Instalare și training", d: "Sursă de venit și în open source", i: ic.chalk, c: C.accent4 },
     ];
     types.forEach((t, k) => {
-      const y = 1.2 + k * 0.76;
-      card(s, MX, y, 9, 0.68, C.background2, "Card tip " + t.l);
-      circleIcon(s, t.i, MX + 0.12, y + 0.09, 0.5, t.c, "Icon tip " + t.l);
-      txt(s, t.l, { x: MX + 0.8, y, w: 0.4, h: 0.68, fontSize: 22, bold: true, color: t.c, valign: "middle" });
-      txt(s, t.t, { x: MX + 1.25, y, w: 2.6, h: 0.68, fontSize: 14, bold: true, valign: "middle" });
-      txt(s, t.d, { x: MX + 3.9, y, w: 5.0, h: 0.68, fontSize: 12, color: C.text2, valign: "middle" });
+      const y = 1.15 + k * 0.67;
+      card(s, MX, y, 9, 0.6, C.background2, "Card tip " + t.l);
+      circleIcon(s, t.i, MX + 0.12, y + 0.07, 0.46, t.c, "Icon tip " + t.l);
+      txt(s, t.l, { x: MX + 0.8, y, w: 0.4, h: 0.6, fontSize: 22, bold: true, color: t.c, valign: "middle" });
+      txt(s, t.t, { x: MX + 1.25, y, w: 2.6, h: 0.6, fontSize: 14, bold: true, valign: "middle" });
+      txt(s, t.d, { x: MX + 3.9, y, w: 5.0, h: 0.6, fontSize: 12, color: C.text2, valign: "middle" });
     });
+    promptBar(s, "ÎNTREBARE", "La ce categorie intră un proiect personal pe care îl aveți (sau l-ați avut)?", 4.6);
   }
 
   {
     const s = lightSlide("Cele 7 faze ale oricărui proiect", "B", "1'", "Proiecte",
       "B (1 min), moment de relaxare din curs. Cele 7 faze umoristice: entuziasm, deziluzie, confuzie, panică, căutarea vinovaților, pedepsirea nevinovaților, promovarea celor neparticipanți. Graficul este ILUSTRATIV, nu date reale. Întrebare: care fază v-a lovit cel mai tare la un proiect de echipă? Mesajul serios: lipsa unui proces și a comunicării duce la acest scenariu, exact de aici se justifică disciplina MPS.");
     s.addChart(pres.charts.LINE, [{ name: "Moral (ilustrativ)", labels: ["Entuziasm", "Deziluzie", "Confuzie", "Panică", "Căutarea vinovaților", "Pedepsirea nevinovaților", "Promovarea celor neparticipanți"], values: [9, 6, 4, 1.5, 2.5, 1, 7.5] }], {
-      x: MX, y: 1.2, w: 9, h: 3.4,
+      x: MX, y: 1.2, w: 9, h: 3.8,
       chartColors: [H.accent3], lineSize: 3, lineDataSymbol: "circle", lineDataSymbolSize: 10,
       showTitle: true, title: "Moralul echipei de-a lungul proiectului (ilustrativ)", titleFontSize: 13, titleColor: H.dk1,
       showValue: false, catAxisLabelColor: H.dk1, catAxisLabelFontSize: 10, valAxisHidden: true,
       valAxisMinVal: 0, valAxisMaxVal: 10, valGridLine: { style: "none" }, catGridLine: { style: "none" },
       showLegend: false, ...chartFonts(),
     });
-    txt(s, [{ text: "Glumă cu miez: ", options: { bold: true, color: C.accent3 } }, { text: "fiecare fază apare când procesul lipsește. Tot ce urmează în curs încearcă să o evite.", options: {} }], { x: MX, y: 4.7, w: 9, h: 0.4, fontSize: 12 });
   }
 
   pres.addSection({ title: "Stakeholderi" });
@@ -660,27 +620,31 @@ async function build() {
       txt(s, lst, { x: x + 0.2, y: 2.1, w: w - 0.5, h: 1.65, fontSize: 13, paraSpaceAfter: 5 });
       x += w;
     });
-    promptBar(s, "VOT RAPID", "Tehnician genial cu comunicare slabă sau comunicator excelent cu tehnic mediu? Stânga / dreapta.", 4.3);
+    pollBar(s, 4, "Ce manager de proiect alegi: tehnician genial cu comunicare slabă sau comunicator excelent cu tehnic mediu?", 4.25);
   }
 
   pres.addSection({ title: "Dezbatere" });
 
   {
-    const s = lightSlide("Dezbatere finală: alegeți o tabără", "AB", "3'", "Dezbatere",
-      "A + B (3 min). Alegem o singură teză, după timpul rămas (de obicei 1 sau 2). Moderăm: A susține tabăra 'DA', B tabăra 'NU' pentru a deschide discuția; apoi cerem sălii argumente. TEZA 1: Un PM fără background tehnic poate conduce un proiect software. Argumente DA: coordonare, comunicare, gestionarea stakeholderilor. Argumente NU: nu poate evalua estimările, riscurile tehnice și credibilitatea față de echipă. TEZA 2: Proiectele software, fiind irepetabile și flexibile, nu pot fi planificate cu Gantt/CPM. DA: incertitudine mare, cerințe schimbătoare. NU: fără plan nu vezi abaterile; planul se actualizează, nu se elimină. TEZA 3: Adaugi oameni la un proiect întârziat? DA: pot fi preluate sarcini independente. NU: Brooks. Încheiem cu: răspunsul bun e 'depinde', dar trebuie să știm DE CE depinde.");
-    const th = [
-      { n: "1", t: "Un PM fără background tehnic poate conduce un proiect software.", a: "Comunică, negociază, ține stakeholderii aliniați", b: "Nu poate judeca estimările și riscurile tehnice", c: C.accent4 },
-      { n: "2", t: "Software-ul fiind irepetabil și flexibil, planurile Gantt/CPM sunt inutile.", a: "Cerințele se schimbă, estimările mint", b: "Fără plan nu vezi abaterile; planul se actualizează", c: C.accent2 },
-      { n: "3", t: "Un proiect întârziat se salvează cu mai mulți oameni.", a: "Se pot delega sarcini independente", b: "Legea lui Brooks: instruire + canale de comunicare", c: C.accent3 },
+    const s = lightSlide("Un mic exercițiu de gândire", "AB", "2'", "Dezbatere",
+      "A + B (2 min). Încheiem cu o singură întrebare scurtă, care leagă tot ce am discutat. Cerem sălii să se gândească 20 de secunde la ultimul proiect de echipă care a mers prost (la facultate sau la muncă), apoi votează în poll ce a lipsit cel mai mult: un plan clar (Gantt, drum critic), implicarea unui stakeholder cheie, sau comunicarea în echipă. Arătăm rezultatul live și luăm 2 comentarii. Mesajul final: toate trei sunt probleme de management, nu de cod. Dacă mai rămâne timp, întrebăm: ce ați face diferit data viitoare?");
+    s.addShape(SH.ellipse, { x: 0.5, y: 1.35, w: 1.0, h: 1.0, fill: { color: C.accent1 }, line: { color: C.accent1, width: 0 }, objectName: "Cerc intrebare" });
+    s.addImage({ data: icDark.bulb, x: 0.75, y: 1.6, w: 0.5, h: 0.5, objectName: "Icon intrebare" });
+    txt(s, "Gândiți-vă la ultimul proiect de echipă care a mers prost.", { x: 1.8, y: 1.3, w: 7.7, h: 0.6, fontSize: 18, color: C.text2 });
+    txt(s, "Ce a lipsit cel mai mult?", { x: 1.8, y: 1.85, w: 7.7, h: 0.7, fontSize: 30, bold: true });
+    const op = [
+      { t: "Un plan clar", d: "Cine face ce, până când", i: ic.calendar, c: C.accent4 },
+      { t: "Un stakeholder implicat", d: "Cineva important a apărut prea târziu", i: ic.users, c: C.accent2 },
+      { t: "Comunicarea în echipă", d: "Fiecare a înțeles altceva", i: ic.comments, c: C.accent3 },
     ];
-    th.forEach((t, i) => {
-      const y = 1.2 + i * 1.3;
-      card(s, MX, y, 9, 1.2, C.background2, "Card teza " + t.n);
-      s.addShape(SH.ellipse, { x: MX + 0.15, y: y + 0.3, w: 0.6, h: 0.6, fill: { color: t.c }, line: { color: t.c, width: 0 }, objectName: "Numar teza " + t.n });
-      txt(s, t.n, { x: MX + 0.15, y: y + 0.3, w: 0.6, h: 0.6, fontSize: 22, bold: true, color: C.background1, align: "center", valign: "middle" });
-      txt(s, t.t, { x: MX + 0.95, y: y + 0.08, w: 3.55, h: 1.05, fontSize: 13, bold: true, valign: "middle" });
-      txt(s, [{ text: "DA: ", options: { bold: true, color: C.accent2 } }, { text: t.a, options: { breakLine: true } }, { text: "NU: ", options: { bold: true, color: C.accent3 } }, { text: t.b, options: {} }], { x: 5.2, y: y + 0.08, w: 4.15, h: 1.05, fontSize: 12, valign: "middle", paraSpaceAfter: 4 });
+    op.forEach((o, k) => {
+      const cx = MX + k * 3.05;
+      card(s, cx, 2.8, 2.9, 1.3, C.background2, "Card varianta " + (k + 1));
+      circleIcon(s, o.i, cx + 0.15, 2.95, 0.55, o.c, "Icon varianta " + (k + 1));
+      txt(s, o.t, { x: cx + 0.85, y: 2.95, w: 1.95, h: 0.55, fontSize: 14, bold: true, valign: "middle" });
+      txt(s, o.d, { x: cx + 0.15, y: 3.6, w: 2.65, h: 0.45, fontSize: 11, color: C.text2 });
     });
+    pollBar(s, 5, "Votați ce a lipsit cel mai mult în ultimul vostru proiect de echipă.", 4.3);
   }
 
   {

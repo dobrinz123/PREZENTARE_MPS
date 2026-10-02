@@ -1,0 +1,158 @@
+<title>Poll MPS</title>
+<style>
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --fg: #12263f;
+  --muted: #5b6b80;
+  --line: #dde3ec;
+  --accent: #f2a900;
+  --accent-fg: #12263f;
+  --bar: #3a6ea5;
+  --bar-mine: #1b998b;
+  --display: "Merriweather", Georgia, serif;
+  --body: "Source Sans 3", "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1b2e; --card: #162a45; --fg: #eef2f7; --muted: #9fb0c6; --line: #2a4163;
+    --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1b2e; --card: #162a45; --fg: #eef2f7; --muted: #9fb0c6; --line: #2a4163;
+  --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; padding-inline: 16px; padding-block: 24px; margin: 0; }
+main { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { font-family: var(--display); font-size: 1.6rem; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 6px 0 0; }
+.poll { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.poll h2 { font-family: var(--display); font-size: 1.05rem; margin: 0; line-height: 1.35; }
+.tag { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.opt { position: relative; display: block; width: 100%; text-align: left; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font: inherit; cursor: pointer; overflow: hidden; min-width: 0; }
+.opt:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.opt .fill { position: absolute; inset: 0 auto 0 0; background: var(--bar); opacity: .22; width: 0; transition: width .4s; }
+.opt.mine { border-color: var(--bar-mine); border-width: 2px; }
+.opt.mine .fill { background: var(--bar-mine); }
+.opt .row { position: relative; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.opt .pct { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.total { color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+.note { background: var(--card); border: 1px dashed var(--line); border-radius: 10px; padding: 14px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .opt .fill { transition: none; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<main>
+  <header>
+    <h1>Poll MPS</h1>
+    <p class="sub">Alege câte un răspuns la fiecare întrebare. Rezultatele se actualizează live.</p>
+  </header>
+  <div id="note" class="note" hidden></div>
+  <div id="polls"></div>
+</main>
+<script>
+const POLLS = [
+  { id: "p1", q: "Care dintre cele trei strică cele mai multe proiecte reale?", o: ["Cerințe bune, dar fără control al schimbărilor", "Estimare prea optimistă, nu mai rămâne timp de testat", "Munca fără cod (instruire, comunicare) nu e planificată"] },
+  { id: "p2", q: "Time tracking-ul și KPI-urile de azi sunt Taylor în variantă digitală?", o: ["Da", "Nu"] },
+  { id: "p3", q: "Mai e valabilă legea lui Brooks astăzi?", o: ["Da, mai mulți oameni întârzie proiectul", "Nu, tool-urile moderne o schimbă"] },
+  { id: "p4", q: "Ce manager de proiect alegi?", o: ["Tehnician genial, comunicare slabă", "Comunicator excelent, tehnic mediu"] },
+  { id: "p5", q: "La ultimul proiect de echipă care a mers prost, ce a lipsit cel mai mult?", o: ["Un plan clar", "Implicarea unui stakeholder cheie", "Comunicarea în echipă"] }
+];
+const state = { votes: {}, mine: {}, uid: null, db: null };
+const root = document.getElementById("polls");
+const note = document.getElementById("note");
+
+function tally(pid) {
+  const counts = POLLS.find(p => p.id === pid).o.map(() => 0);
+  Object.values(state.votes).forEach(v => { if (typeof v[pid] === "number" && counts[v[pid]] !== undefined) counts[v[pid]]++; });
+  return counts;
+}
+
+function render() {
+  root.replaceChildren();
+  POLLS.forEach((p, i) => {
+    const counts = tally(p.id);
+    const total = counts.reduce((a, b) => a + b, 0);
+    const box = document.createElement("section");
+    box.className = "poll";
+    box.style.marginBottom = "20px";
+    const tag = document.createElement("div");
+    tag.className = "tag";
+    tag.textContent = "Întrebarea " + (i + 1);
+    const h = document.createElement("h2");
+    h.textContent = p.q;
+    box.append(tag, h);
+    p.o.forEach((label, k) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt" + (state.mine[p.id] === k ? " mine" : "");
+      b.disabled = !state.db;
+      const fill = document.createElement("span");
+      fill.className = "fill";
+      fill.style.width = (total ? Math.round(counts[k] * 100 / total) : 0) + "%";
+      const row = document.createElement("span");
+      row.className = "row";
+      const l = document.createElement("span");
+      l.textContent = label;
+      const pc = document.createElement("span");
+      pc.className = "pct";
+      pc.textContent = total ? Math.round(counts[k] * 100 / total) + "%" : "";
+      row.append(l, pc);
+      b.append(fill, row);
+      b.addEventListener("click", () => vote(p.id, k));
+      box.append(b);
+    });
+    const t = document.createElement("div");
+    t.className = "total";
+    t.textContent = total + (total === 1 ? " vot" : " voturi");
+    box.append(t);
+    root.append(box);
+  });
+}
+
+async function vote(pid, k) {
+  if (!state.db || !state.uid) return;
+  const next = Object.assign({}, state.mine, { [pid]: k });
+  state.mine = next;
+  state.votes[state.uid] = next;
+  render();
+  try {
+    await state.db.doc("votes/" + state.uid).set(next);
+  } catch (e) {
+    note.hidden = false;
+    note.textContent = "Votul nu a putut fi salvat. Cere accesul de Contributor la organizator și reîncarcă pagina.";
+  }
+}
+
+function showNote(text) {
+  note.hidden = false;
+  note.textContent = text;
+}
+
+async function start() {
+  render();
+  const db = await claude.use("db");
+  const user = await claude.use("user");
+  if (!db || !user) {
+    showNote("Pentru a vota, deschide pagina din contul tău Claude. Poți vedea întrebările, dar nu poți salva voturi fără cont.");
+    return;
+  }
+  state.db = db;
+  state.uid = await user.id();
+  if (!state.uid) {
+    state.db = null;
+    showNote("Nu te-am putut identifica. Deschide pagina din contul tău Claude.");
+    render();
+    return;
+  }
+  db.collection("votes").onSnapshot(snap => {
+    const all = {};
+    snap.docs.forEach(d => { all[d.id] = d.data() || {}; });
+    state.votes = all;
+    state.mine = all[state.uid] || state.mine;
+    render();
+  }, () => showNote("Rezultatele live nu sunt disponibile acum. Reîncarcă pagina."));
+  render();
+}
+start();
+</script>
