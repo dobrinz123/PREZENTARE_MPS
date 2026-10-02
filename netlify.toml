@@ -1,7 +1,8 @@
 [build]
-  command = "echo no build step"
+  base = "poll-app"
   publish = "public"
   functions = "netlify/functions"
+  command = "echo no build step"
 
 [functions]
   node_bundler = "esbuild"
