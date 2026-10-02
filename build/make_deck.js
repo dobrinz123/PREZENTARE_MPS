@@ -7,7 +7,7 @@ const fa = require("react-icons/fa");
 const { applyTheme } = require("/root/.claude/skills/synced/dcf963bb-9c61-46f5-bef2-39592a3aa903_876e3daa-0869-4ab9-88ef-368b44a1e9ef/pptx/scripts/apply_theme.js");
 
 const QRCode = require("qrcode");
-const POLL_URL = process.env.POLL_URL || "";
+const POLL_URL = process.env.POLL_URL || "https://mpsprezentare.netlify.app/";
 const POLL_SHORT = POLL_URL.replace(/^https?:\/\//, "");
 const OUT = path.join(__dirname, "..", "Prezentare_MPS.pptx");
 const ASSETS = path.join(__dirname, "assets");
