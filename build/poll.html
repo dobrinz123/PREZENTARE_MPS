@@ -10,45 +10,74 @@
   --accent-fg: #12263f;
   --bar: #3a6ea5;
   --bar-mine: #1b998b;
+  --live: #e4572e;
   --display: "Merriweather", Georgia, serif;
   --body: "Source Sans 3", "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0d1b2e; --card: #162a45; --fg: #eef2f7; --muted: #9fb0c6; --line: #2a4163;
-    --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; color-scheme: dark;
+    --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; --live: #ff7a57; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0d1b2e; --card: #162a45; --fg: #eef2f7; --muted: #9fb0c6; --line: #2a4163;
-  --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; color-scheme: dark;
+  --accent: #f2a900; --accent-fg: #12263f; --bar: #5f93c9; --bar-mine: #2fc4b2; --live: #ff7a57; color-scheme: dark;
 }
+* { box-sizing: border-box; }
 body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; padding-inline: 16px; padding-block: 24px; margin: 0; }
-main { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-h1 { font-family: var(--display); font-size: 1.6rem; margin: 0; text-wrap: balance; }
-.sub { color: var(--muted); margin: 6px 0 0; }
-.poll { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.poll h2 { font-family: var(--display); font-size: 1.05rem; margin: 0; line-height: 1.35; }
+main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+h1 { font-family: var(--display); font-size: 1.5rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 1.25rem; margin: 0; line-height: 1.35; text-wrap: balance; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.tabs { display: flex; gap: 6px; }
+.tab { font: inherit; font-weight: 600; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.tab[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .tag { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-.opt { position: relative; display: block; width: 100%; text-align: left; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font: inherit; cursor: pointer; overflow: hidden; min-width: 0; }
-.opt:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.opt .fill { position: absolute; inset: 0 auto 0 0; background: var(--bar); opacity: .22; width: 0; transition: width .4s; }
-.opt.mine { border-color: var(--bar-mine); border-width: 2px; }
-.opt.mine .fill { background: var(--bar-mine); }
-.opt .row { position: relative; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-.opt .pct { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
-.total { color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+.live { color: var(--live); }
+.muted { color: var(--muted); }
+.wait { text-align: center; padding-block: 36px; }
+.opt { position: relative; display: block; width: 100%; text-align: left; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font: inherit; cursor: pointer; overflow: hidden; min-width: 0; }
+.opt:focus-visible, .btn:focus-visible, .tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.opt.mine { border-color: var(--bar-mine); border-width: 2px; background: color-mix(in srgb, var(--bar-mine) 14%, transparent); font-weight: 600; }
+.opt:disabled { cursor: default; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--accent); color: var(--accent-fg); }
+.btn.alt { background: transparent; color: var(--fg); border: 1px solid var(--line); font-weight: 600; }
+.btn.stop { background: var(--live); color: #fff; }
+.btn:disabled { opacity: .45; cursor: default; }
+.chart { display: flex; flex-direction: column; gap: 12px; }
+.bar-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.bar-label { display: flex; justify-content: space-between; gap: 12px; font-size: 1.05rem; }
+.bar-label b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.track { height: 28px; background: color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; overflow: hidden; }
+.fill { height: 100%; background: var(--bar); width: 0; transition: width .5s; border-radius: 6px; }
+.bar-row.mine .fill { background: var(--bar-mine); }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.item { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--card); }
+.item.sel { border-color: var(--fg); border-width: 2px; }
+.item .q { min-width: 0; }
+.item .q button { all: unset; cursor: pointer; display: block; }
+.item .q button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.pill { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+.pill.open { background: var(--live); color: #fff; border-color: var(--live); }
+.pill.closed { background: var(--bar-mine); color: #fff; border-color: var(--bar-mine); }
 .note { background: var(--card); border: 1px dashed var(--line); border-radius: 10px; padding: 14px; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .opt .fill { transition: none; } }
+.big { font-size: 2.4rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <main>
-  <header>
+  <div class="top">
     <h1>Poll MPS</h1>
-    <p class="sub">Alege câte un răspuns la fiecare întrebare. Rezultatele se actualizează live.</p>
-  </header>
+    <div class="tabs" id="tabs" hidden>
+      <button class="tab" id="tab-aud" type="button" aria-pressed="true">Vedere public</button>
+      <button class="tab" id="tab-master" type="button" aria-pressed="false">Panou prezentator</button>
+    </div>
+  </div>
   <div id="note" class="note" hidden></div>
-  <div id="polls"></div>
+  <div id="view"></div>
 </main>
 <script>
 const POLLS = [
@@ -58,100 +87,213 @@ const POLLS = [
   { id: "p4", q: "Ce manager de proiect alegi?", o: ["Tehnician genial, comunicare slabă", "Comunicator excelent, tehnic mediu"] },
   { id: "p5", q: "La ultimul proiect de echipă care a mers prost, ce a lipsit cel mai mult?", o: ["Un plan clar", "Implicarea unui stakeholder cheie", "Comunicarea în echipă"] }
 ];
-const state = { votes: {}, mine: {}, uid: null, db: null };
-const root = document.getElementById("polls");
+const S = { db: null, uid: null, isMaster: false, tab: "aud", votes: {}, ctrl: { active: null, status: "idle" }, sel: "p1" };
+const view = document.getElementById("view");
 const note = document.getElementById("note");
 
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function pollById(id) { return POLLS.find(p => p.id === id); }
 function tally(pid) {
-  const counts = POLLS.find(p => p.id === pid).o.map(() => 0);
-  Object.values(state.votes).forEach(v => { if (typeof v[pid] === "number" && counts[v[pid]] !== undefined) counts[v[pid]]++; });
+  const p = pollById(pid);
+  const counts = p.o.map(() => 0);
+  Object.values(S.votes).forEach(v => { if (typeof v[pid] === "number" && counts[v[pid]] !== undefined) counts[v[pid]]++; });
   return counts;
+}
+function mine(pid) { const v = S.votes[S.uid]; return v && typeof v[pid] === "number" ? v[pid] : null; }
+function showNote(t) { note.hidden = !t; note.textContent = t || ""; }
+
+function chart(pid, withMine) {
+  const p = pollById(pid);
+  const counts = tally(pid);
+  const total = counts.reduce((a, b) => a + b, 0);
+  const wrap = el("div", "chart");
+  const m = withMine ? mine(pid) : null;
+  p.o.forEach((label, k) => {
+    const pct = total ? Math.round(counts[k] * 100 / total) : 0;
+    const row = el("div", "bar-row" + (m === k ? " mine" : ""));
+    const lab = el("div", "bar-label");
+    lab.append(el("span", "", label + (m === k ? "  (votul tău)" : "")), el("b", "", counts[k] + " · " + pct + "%"));
+    const tr = el("div", "track");
+    const f = el("div", "fill");
+    f.style.width = pct + "%";
+    tr.append(f);
+    row.append(lab, tr);
+    wrap.append(row);
+  });
+  wrap.append(el("div", "muted", total + (total === 1 ? " vot" : " voturi")));
+  return wrap;
+}
+
+function renderAudience() {
+  const box = el("section", "card");
+  const { active, status } = S.ctrl;
+  if (!active || status === "idle") {
+    box.classList.add("wait");
+    box.append(el("div", "tag", "Conectat"), el("h2", "", "Așteaptă următoarea întrebare"), el("div", "muted", "Prezentatorul o pornește în curând. Nu închide pagina."));
+    return box;
+  }
+  const p = pollById(active);
+  const idx = POLLS.indexOf(p) + 1;
+  if (status === "open") {
+    const t = el("div", "tag live", "Întrebarea " + idx + " · votează acum");
+    box.append(t, el("h2", "", p.q));
+    const m = mine(active);
+    p.o.forEach((label, k) => {
+      const b = el("button", "opt" + (m === k ? " mine" : ""), label);
+      b.type = "button";
+      b.disabled = !S.db;
+      b.addEventListener("click", () => vote(active, k));
+      box.append(b);
+    });
+    box.append(el("div", "muted", m === null ? "Alege un răspuns. Îl poți schimba până se închide votul." : "Vot înregistrat. Îl poți schimba până se închide votul."));
+  } else {
+    box.append(el("div", "tag", "Întrebarea " + idx + " · rezultate"), el("h2", "", p.q), chart(active, true));
+  }
+  return box;
+}
+
+function renderMaster() {
+  const frag = el("div", "list");
+  const { active, status } = S.ctrl;
+  POLLS.forEach((p, i) => {
+    const isActive = active === p.id && status !== "idle";
+    const it = el("div", "item" + (S.sel === p.id ? " sel" : ""));
+    const q = el("div", "q");
+    const qb = el("button", "");
+    qb.type = "button";
+    const line = el("div", "tag", "Întrebarea " + (i + 1));
+    if (isActive) {
+      const pill = el("span", "pill " + status, status === "open" ? "deschis" : "închis");
+      pill.style.marginLeft = "8px";
+      line.append(pill);
+    }
+    qb.append(line, el("div", "", p.q));
+    qb.addEventListener("click", () => { S.sel = p.id; render(); });
+    q.append(qb);
+    const acts = el("div", "actions");
+    if (isActive && status === "open") {
+      const stop = el("button", "btn stop", "Stop + arată rezultate");
+      stop.type = "button";
+      stop.addEventListener("click", () => setCtrl(p.id, "closed"));
+      acts.append(stop);
+    } else {
+      const start = el("button", "btn", isActive ? "Redeschide" : "Start");
+      start.type = "button";
+      start.disabled = active && status === "open";
+      start.addEventListener("click", () => { S.sel = p.id; setCtrl(p.id, "open"); });
+      acts.append(start);
+    }
+    it.append(q, acts);
+    frag.append(it);
+  });
+
+  const sel = pollById(S.sel);
+  const counts = tally(S.sel);
+  const total = counts.reduce((a, b) => a + b, 0);
+  const results = el("section", "card");
+  const live = active === S.sel && status === "open";
+  results.append(el("div", "tag" + (live ? " live" : ""), live ? "Rezultate live (publicul nu le vede încă)" : "Rezultate"), el("h2", "", sel.q), chart(S.sel, false));
+  const row = el("div", "actions");
+  row.style.justifyContent = "flex-start";
+  const clr = el("button", "btn alt", "Șterge voturile la această întrebare");
+  clr.type = "button";
+  clr.disabled = total === 0;
+  clr.addEventListener("click", () => clearVotes(S.sel));
+  const idle = el("button", "btn alt", "Ecran de așteptare pentru public");
+  idle.type = "button";
+  idle.addEventListener("click", () => setCtrl(null, "idle"));
+  row.append(clr, idle);
+  results.append(row);
+
+  const wrap = el("div", "");
+  wrap.style.display = "flex";
+  wrap.style.flexDirection = "column";
+  wrap.style.gap = "18px";
+  wrap.append(frag, results);
+  return wrap;
 }
 
 function render() {
-  root.replaceChildren();
-  POLLS.forEach((p, i) => {
-    const counts = tally(p.id);
-    const total = counts.reduce((a, b) => a + b, 0);
-    const box = document.createElement("section");
-    box.className = "poll";
-    box.style.marginBottom = "20px";
-    const tag = document.createElement("div");
-    tag.className = "tag";
-    tag.textContent = "Întrebarea " + (i + 1);
-    const h = document.createElement("h2");
-    h.textContent = p.q;
-    box.append(tag, h);
-    p.o.forEach((label, k) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "opt" + (state.mine[p.id] === k ? " mine" : "");
-      b.disabled = !state.db;
-      const fill = document.createElement("span");
-      fill.className = "fill";
-      fill.style.width = (total ? Math.round(counts[k] * 100 / total) : 0) + "%";
-      const row = document.createElement("span");
-      row.className = "row";
-      const l = document.createElement("span");
-      l.textContent = label;
-      const pc = document.createElement("span");
-      pc.className = "pct";
-      pc.textContent = total ? Math.round(counts[k] * 100 / total) + "%" : "";
-      row.append(l, pc);
-      b.append(fill, row);
-      b.addEventListener("click", () => vote(p.id, k));
-      box.append(b);
-    });
-    const t = document.createElement("div");
-    t.className = "total";
-    t.textContent = total + (total === 1 ? " vot" : " voturi");
-    box.append(t);
-    root.append(box);
-  });
+  view.replaceChildren(S.tab === "master" && S.isMaster ? renderMaster() : renderAudience());
+  document.getElementById("tab-aud").setAttribute("aria-pressed", String(S.tab !== "master"));
+  document.getElementById("tab-master").setAttribute("aria-pressed", String(S.tab === "master"));
 }
 
 async function vote(pid, k) {
-  if (!state.db || !state.uid) return;
-  const next = Object.assign({}, state.mine, { [pid]: k });
-  state.mine = next;
-  state.votes[state.uid] = next;
+  if (!S.db || !S.uid || S.ctrl.active !== pid || S.ctrl.status !== "open") return;
+  const next = Object.assign({}, S.votes[S.uid] || {}, { [pid]: k });
+  S.votes[S.uid] = next;
   render();
   try {
-    await state.db.doc("votes/" + state.uid).set(next);
+    await S.db.doc("votes/" + S.uid).set(next);
   } catch (e) {
-    note.hidden = false;
-    note.textContent = "Votul nu a putut fi salvat. Cere accesul de Contributor la organizator și reîncarcă pagina.";
+    showNote("Votul nu a putut fi salvat. Cere accesul de Contributor la prezentator și reîncarcă pagina.");
   }
 }
 
-function showNote(text) {
-  note.hidden = false;
-  note.textContent = text;
+async function setCtrl(active, status) {
+  if (!S.db) return;
+  S.ctrl = { active, status };
+  render();
+  try {
+    await S.db.doc("control/state").set({ active, status, at: Date.now() });
+  } catch (e) {
+    showNote("Nu am putut schimba starea poll-ului. Reîncarcă pagina.");
+  }
+}
+
+async function clearVotes(pid) {
+  if (!S.db) return;
+  const ids = Object.keys(S.votes);
+  for (const id of ids) {
+    const v = Object.assign({}, S.votes[id]);
+    if (!(pid in v)) continue;
+    delete v[pid];
+    S.votes[id] = v;
+    try { await S.db.doc("votes/" + id).set(v); } catch (e) { showNote("Nu am putut șterge toate voturile."); break; }
+  }
+  render();
 }
 
 async function start() {
+  document.getElementById("tab-aud").addEventListener("click", () => { S.tab = "aud"; render(); });
+  document.getElementById("tab-master").addEventListener("click", () => { S.tab = "master"; render(); });
   render();
   const db = await claude.use("db");
   const user = await claude.use("user");
   if (!db || !user) {
-    showNote("Pentru a vota, deschide pagina din contul tău Claude. Poți vedea întrebările, dar nu poți salva voturi fără cont.");
+    showNote("Pentru a vota, deschide pagina din contul tău Claude.");
     return;
   }
-  state.db = db;
-  state.uid = await user.id();
-  if (!state.uid) {
-    state.db = null;
+  S.db = db;
+  S.uid = await user.id();
+  if (!S.uid) {
+    S.db = null;
     showNote("Nu te-am putut identifica. Deschide pagina din contul tău Claude.");
     render();
     return;
   }
+  try { S.isMaster = Boolean(await user.isOwner()) || Boolean(await user.canEdit()); } catch (e) { S.isMaster = false; }
+  if (S.isMaster) {
+    document.getElementById("tabs").hidden = false;
+    S.tab = "master";
+  }
   db.collection("votes").onSnapshot(snap => {
     const all = {};
     snap.docs.forEach(d => { all[d.id] = d.data() || {}; });
-    state.votes = all;
-    state.mine = all[state.uid] || state.mine;
+    S.votes = all;
     render();
   }, () => showNote("Rezultatele live nu sunt disponibile acum. Reîncarcă pagina."));
+  db.doc("control/state").onSnapshot(snap => {
+    const d = snap.exists ? snap.data() : null;
+    S.ctrl = d && d.status ? { active: d.active || null, status: d.status } : { active: null, status: "idle" };
+    render();
+  }, () => showNote("Starea poll-ului nu este disponibilă. Reîncarcă pagina."));
   render();
 }
 start();

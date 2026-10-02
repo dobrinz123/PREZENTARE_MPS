@@ -160,11 +160,9 @@ function pollBar(s, n, text, y) {
   s.addText([{ text: "POLL", options: { bold: true, fontSize: 12, breakLine: true } }, { text: "Întrebarea " + n, options: { fontSize: 10 } }], {
     x: MX + 0.2, y, w: 1.3, h: 0.8, color: C.accent1, valign: "middle", margin: 0, isTextBox: true, objectName: "Eticheta poll",
   });
-  s.addText([{ text, options: { fontSize: 13, breakLine: true } }, { text: "Scanează codul sau deschide " + POLL_SHORT, options: { fontSize: 9, color: C.accent6 } }], {
-    x: MX + 1.55, y, w: 6.2, h: 0.8, color: C.background1, valign: "middle", margin: 0, isTextBox: true, objectName: "Text poll",
+  s.addText([{ text, options: { fontSize: 14, breakLine: true } }, { text: "Votați de pe telefon, în pagina de poll deschisă după scanarea codului", options: { fontSize: 9, color: C.accent6 } }], {
+    x: MX + 1.55, y, w: 7.2, h: 0.8, color: C.background1, valign: "middle", margin: 0, isTextBox: true, objectName: "Text poll",
   });
-  s.addShape(SH.roundRect, { x: MX + 8.0, y: y + 0.05, w: 0.7, h: 0.7, rectRadius: 0.05, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR" });
-  s.addImage({ data: QR_DATA, x: MX + 8.03, y: y + 0.08, w: 0.64, h: 0.64, objectName: "Cod QR poll" });
 }
 
 function chartFonts() {
@@ -218,8 +216,23 @@ async function build() {
 
 
   {
+    const s = pres.addSlide({ masterName: "DARK", sectionTitle: "Deschidere" });
+    s.addText("Intrați în poll", { placeholder: "title", x: 0.6, y: 0.7, w: 5.2, h: 1.0 });
+    txt(s, [
+      { text: "1.  Scanați codul cu telefonul", options: { breakLine: true } },
+      { text: "2.  Deschideți pagina în contul Claude", options: { breakLine: true } },
+      { text: "3.  Așteptați prima întrebare", options: {} },
+    ], { x: 0.6, y: 2.0, w: 5.0, h: 1.5, fontSize: 18, color: C.background1, paraSpaceAfter: 10 });
+    txt(s, "Rămâneți conectați: întrebările pornesc pe parcurs, iar rezultatele apar pe ecran.", { x: 0.6, y: 3.7, w: 5.0, h: 0.8, fontSize: 13, color: C.accent6 });
+    txt(s, POLL_SHORT, { x: 0.6, y: 4.6, w: 5.2, h: 0.3, fontSize: 10, color: C.accent1 });
+    s.addShape(SH.roundRect, { x: 6.1, y: 0.95, w: 3.4, h: 3.4, rectRadius: 0.15, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR mare" });
+    s.addImage({ data: QR_DATA, x: 6.3, y: 1.15, w: 3.0, h: 3.0, objectName: "Cod QR mare" });
+    s.addNotes("A (1 min). Cerem sălii să scaneze codul acum, cât timp noi povestim. Pe PC-ul de prezentare ținem pagina de poll deschisă într-un tab separat, pe 'Panou prezentator'. De acolo apăsăm Start la fiecare întrebare (apar la slide-urile 3, 6, 9, 18 și 19), iar după ce s-a votat apăsăm 'Stop + arată rezultate': publicul vede graficul pe telefon, iar noi îl arătăm pe ecran trecând pe tab-ul panoului. Important: pagina trebuie partajată cu acces de Contributor, iar participanții trebuie să fie autentificați în Claude.");
+  }
+
+  {
     const s = lightSlide("Cod impecabil, proiect pierdut?", "A", "2'", "Deschidere",
-      "A (2 min). Idee din Motivație (2): tehnicile sunt inutile fără proces. Citim cele 3 scenarii și cerem VOT RAPID: care dintre ele ucide cele mai multe proiecte reale? Numărăm mâinile 1/2/3. Provocăm: cineva a trăit un caz? Concluzia: cerințele, testarea și livrarea sunt probleme de PROCES, nu doar de tehnică.");
+      "A (2 min). Idee din Motivație (2): tehnicile sunt inutile fără proces. Citim cele 3 scenarii și pornim POLL-ul 1 din panou: care dintre ele ucide cele mai multe proiecte reale? După ~30 secunde apăsăm Stop și arătăm graficul. Provocăm: cineva a trăit un caz? Concluzia: cerințele, testarea și livrarea sunt probleme de PROCES, nu doar de tehnică.");
     const cs = [
       { n: "1", i: ic.fileSig, c: C.accent4, t: "Cerințe scrise perfect", d: "…dar nimeni nu controlează cum se acceptă și se urmăresc modificările." },
       { n: "2", i: ic.hourglass, c: C.accent3, t: "Teste excelente", d: "…dar estimarea a fost prea optimistă, lansarea a întârziat și nu a mai rămas timp de testat." },
@@ -398,9 +411,7 @@ async function build() {
       { text: "POLL · ÎNTREBAREA 3", options: { bold: true, fontSize: 11, color: C.accent1, breakLine: true } },
       { text: "Mai e valabilă legea lui Brooks cu tool-uri și practici moderne?", options: { fontSize: 13, color: C.background1 } },
     ], { x: 6.6, y: 3.0, w: 2.75, h: 1.0, paraSpaceAfter: 6 });
-    s.addShape(SH.roundRect, { x: 8.45, y: 4.05, w: 0.7, h: 0.7, rectRadius: 0.05, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR" });
-    s.addImage({ data: QR_DATA, x: 8.48, y: 4.08, w: 0.64, h: 0.64, objectName: "Cod QR poll" });
-    txt(s, "Votați cu codul QR", { x: 6.6, y: 4.2, w: 1.7, h: 0.4, fontSize: 10, color: C.accent6 });
+    txt(s, "Votați de pe telefon", { x: 6.6, y: 4.2, w: 2.7, h: 0.4, fontSize: 11, color: C.accent6 });
   }
 
   pres.addSection({ title: "Proiecte" });
