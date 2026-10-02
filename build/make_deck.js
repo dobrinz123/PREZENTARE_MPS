@@ -7,8 +7,8 @@ const fa = require("react-icons/fa");
 const { applyTheme } = require("/root/.claude/skills/synced/dcf963bb-9c61-46f5-bef2-39592a3aa903_876e3daa-0869-4ab9-88ef-368b44a1e9ef/pptx/scripts/apply_theme.js");
 
 const QRCode = require("qrcode");
-const POLL_URL = "https://claude.ai/artifact/GjZziNBVD3syivLtybZ2rT";
-const POLL_SHORT = "claude.ai/artifact/GjZziNBVD3syivLtybZ2rT";
+const POLL_URL = process.env.POLL_URL || "";
+const POLL_SHORT = POLL_URL.replace(/^https?:\/\//, "");
 const OUT = path.join(__dirname, "..", "Prezentare_MPS.pptx");
 const ASSETS = path.join(__dirname, "assets");
 
@@ -176,7 +176,7 @@ function chartFonts() {
 }
 
 async function build() {
-  QR_DATA = "image/png;base64," + (await QRCode.toDataURL(POLL_URL, { margin: 0, width: 400, errorCorrectionLevel: "M" })).split(",")[1];
+  if (POLL_URL) QR_DATA = "image/png;base64," + (await QRCode.toDataURL(POLL_URL, { margin: 0, width: 400, errorCorrectionLevel: "M" })).split(",")[1];
   const ic = {};
   const need = {
     cloud: ["FaCloud", H.lt1], sliders: ["FaSlidersH", H.lt1], finger: ["FaFingerprint", H.lt1],
@@ -215,19 +215,19 @@ async function build() {
   }
 
 
-  {
+  if (POLL_URL) {
     const s = pres.addSlide({ masterName: "DARK", sectionTitle: "Deschidere" });
     s.addText("Intrați în poll", { placeholder: "title", x: 0.6, y: 0.7, w: 5.2, h: 1.0 });
     txt(s, [
       { text: "1.  Scanați codul cu telefonul", options: { breakLine: true } },
-      { text: "2.  Deschideți pagina în contul Claude", options: { breakLine: true } },
+      { text: "2.  Deschideți pagina din browserul telefonului", options: { breakLine: true } },
       { text: "3.  Așteptați prima întrebare", options: {} },
     ], { x: 0.6, y: 2.0, w: 5.0, h: 1.5, fontSize: 18, color: C.background1, paraSpaceAfter: 10 });
     txt(s, "Rămâneți conectați: întrebările pornesc pe parcurs, iar rezultatele apar pe ecran.", { x: 0.6, y: 3.7, w: 5.0, h: 0.8, fontSize: 13, color: C.accent6 });
     txt(s, POLL_SHORT, { x: 0.6, y: 4.6, w: 5.2, h: 0.3, fontSize: 10, color: C.accent1 });
     s.addShape(SH.roundRect, { x: 6.1, y: 0.95, w: 3.4, h: 3.4, rectRadius: 0.15, fill: { color: C.background1 }, line: { color: C.background1, width: 0 }, objectName: "Fundal QR mare" });
     s.addImage({ data: QR_DATA, x: 6.3, y: 1.15, w: 3.0, h: 3.0, objectName: "Cod QR mare" });
-    s.addNotes("A (1 min). Cerem sălii să scaneze codul acum, cât timp noi povestim. Pe PC-ul de prezentare ținem pagina de poll deschisă într-un tab separat, pe 'Panou prezentator'. De acolo apăsăm Start la fiecare întrebare (apar la slide-urile 3, 6, 9, 18 și 19), iar după ce s-a votat apăsăm 'Stop + arată rezultate': publicul vede graficul pe telefon, iar noi îl arătăm pe ecran trecând pe tab-ul panoului. Important: pagina trebuie partajată cu acces de Contributor, iar participanții trebuie să fie autentificați în Claude.");
+    s.addNotes("A (1 min). Cerem sălii să scaneze codul acum, cât timp noi povestim. Pe PC-ul de prezentare ținem pagina /master deschisă într-un tab separat (cu PIN-ul de prezentator). De acolo apăsăm Start la fiecare întrebare marcată POLL pe slide-uri, iar după ce s-a votat apăsăm 'Stop + arată rezultate': publicul vede graficul pe telefon, iar noi îl arătăm pe ecran trecând pe tab-ul panoului. Participanții nu au nevoie de cont.");
   }
 
   {

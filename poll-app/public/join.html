@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intră în poll</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/app.css">
+<script src="/vendor/qrcode.js"></script>
+</head>
+<body>
+<main class="join">
+  <h1>Scanează și intră în poll</h1>
+  <div class="qrbox" id="qr"></div>
+  <div class="url" id="url"></div>
+</main>
+<script>
+(function () {
+  var target = location.origin + "/";
+  document.getElementById("url").textContent = target.replace(/^https?:\/\//, "");
+  var qr = qrcode(0, "M");
+  qr.addData(target);
+  qr.make();
+  var size = Math.max(Math.min(window.innerWidth - 80, window.innerHeight - 280, 520), 200);
+  var cell = Math.floor(size / qr.getModuleCount());
+  document.getElementById("qr").innerHTML = qr.createSvgTag({ cellSize: cell, margin: 0, scalable: true });
+  var svg = document.querySelector("#qr svg");
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+})();
+</script>
+</body>
+</html>
