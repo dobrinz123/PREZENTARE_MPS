@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ghid Prezentator B</title>
+<style>
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --fg: #12263f;
+  --muted: #5b6b80;
+  --line: #dde3ec;
+  --soft: #eef2f7;
+  --accent: #f2a900;
+  --accent-fg: #12263f;
+  --teal: #1b998b;
+  --coral: #e4572e;
+  --blue: #3a6ea5;
+  --display: Georgia, "Times New Roman", serif;
+  --body: "Segoe UI", Calibri, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1b2e; --card: #162a45; --fg: #eef2f7; --muted: #9fb0c6; --line: #2a4163; --soft: #1d3555;
+    --teal: #2fc4b2; --coral: #ff7a57; --blue: #7fb0e3; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5; margin: 0; padding: 0 16px 48px; }
+.wrap { max-width: 820px; margin: 0 auto; }
+header { padding-block: 20px 8px; display: flex; flex-direction: column; gap: 10px; }
+h1 { font-family: var(--display); font-size: 1.6rem; margin: 0; text-wrap: balance; }
+.lead { color: var(--muted); margin: 0; }
+.progress { display: flex; align-items: center; gap: 10px; }
+.progress .bar { flex: 1; height: 10px; background: var(--soft); border-radius: 99px; overflow: hidden; }
+.progress .bar i { display: block; height: 100%; width: 0; background: var(--teal); transition: width .3s; }
+.progress span { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; white-space: nowrap; }
+nav { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-block: 8px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.tab { font: inherit; font-weight: 600; background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.tab[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.tab:focus-visible, .btn:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+section.panel { display: none; padding-top: 16px; flex-direction: column; gap: 12px; }
+section.panel.on { display: flex; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0; }
+.card h2 { font-family: var(--display); font-size: 1.15rem; margin: 0 0 6px; }
+.card h3 { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px; }
+.say { background: var(--soft); border-radius: 8px; padding: 10px 12px; font-style: italic; margin-top: 10px; }
+.say b { font-style: normal; color: var(--blue); }
+.warn { border: 1px solid var(--coral); color: var(--coral); border-radius: 8px; padding: 8px 12px; margin-top: 10px; }
+ul { margin: 4px 0; padding-left: 1.2rem; }
+li { margin: 2px 0; }
+details.slide { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+details.slide[open] { border-color: var(--fg); }
+details.slide summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+details.slide summary::-webkit-details-marker { display: none; }
+.num { background: var(--teal); color: #fff; font-weight: 700; border-radius: 8px; padding: 2px 9px; font-variant-numeric: tabular-nums; }
+.ttl { font-weight: 600; min-width: 0; }
+.time { color: var(--muted); font-size: .85rem; white-space: nowrap; }
+.body { padding: 0 16px 16px; }
+.done-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-weight: 600; }
+.done-row input { width: 20px; height: 20px; accent-color: var(--teal); }
+details.slide.is-done .num { background: var(--muted); }
+.fc { text-align: center; padding: 28px 18px; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.fc .tag { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.fc .q { font-family: var(--display); font-size: 1.25rem; text-wrap: balance; }
+.fc .a { background: var(--soft); border-radius: 8px; padding: 12px 14px; text-align: left; width: 100%; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--accent); color: var(--accent-fg); }
+.btn.alt { background: transparent; color: var(--fg); border: 1px solid var(--line); font-weight: 600; }
+.btn.ok { background: var(--teal); color: #fff; }
+.btn.no { background: var(--coral); color: #fff; }
+.score { color: var(--muted); text-align: center; font-variant-numeric: tabular-nums; }
+.search { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); width: 100%; }
+dl { margin: 0; display: grid; grid-template-columns: minmax(110px, 200px) 1fr; gap: 8px 14px; }
+dt { font-weight: 700; }
+dd { margin: 0; color: var(--muted); }
+@media (max-width: 520px) { dl { grid-template-columns: 1fr; } dd { margin-bottom: 6px; } .time { display: none; } }
+@media (prefers-reduced-motion: reduce) { .progress .bar i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Ghid pentru Prezentatorul B</h1>
+    <p class="lead">Managementul Proiectelor Software · slide-urile 10–21 · aproximativ 13 minute de vorbit</p>
+    <div class="progress"><div class="bar"><i id="pbar"></i></div><span id="ptxt">0 / 12 slide-uri învățate</span></div>
+  </header>
+  <nav id="nav">
+    <button class="tab" data-p="start" type="button" aria-pressed="true">Start</button>
+    <button class="tab" data-p="slides" type="button" aria-pressed="false">Slide cu slide</button>
+    <button class="tab" data-p="test" type="button" aria-pressed="false">Test-mă</button>
+    <button class="tab" data-p="gloss" type="button" aria-pressed="false">Glosar</button>
+    <button class="tab" data-p="poll" type="button" aria-pressed="false">Poll</button>
+  </nav>
+
+  <section class="panel on" id="p-start">
+    <div class="card">
+      <h2>Ce ai de făcut</h2>
+      <ul>
+        <li><b>Ce prezinți:</b> ce este un proiect, proiect vs. operațional, tipurile de proiecte software, stakeholderii și managerul de proiect, plus finalul împreună cu A.</li>
+        <li><b>Ordinea:</b> 10 proiect → 11 proiect sau operațional → 12 program/portofoliu → 13 tipuri → 14 cele 7 faze → 15 stakeholderi → 16 exercițiu → 17 putere–interes → 18 manager → 19–21 final cu A.</li>
+        <li><b>Timp:</b> începi la minutul 12:00 și termini partea ta la 22:30; apoi 2,5 minute împreună cu A.</li>
+        <li><b>Regula de aur:</b> nu citești slide-urile. Spui ideea cu vorbele tale în 2–3 propoziții, apoi pui întrebarea către sală.</li>
+        <li><b>Dacă nu știi ceva:</b> spui „În curs apare așa…” și revii la ideea principală. Nu inventa cifre sau nume.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Ideea de fond, în 30 de secunde</h2>
+      <p>Ca să livrezi software la timp, în buget și cu calitate, nu îți ajunge cod bun. Ai nevoie de un proces: cine face ce, până când, cu ce resurse și cine e afectat de proiect. Partea lui A arată de unde vin instrumentele de planificare. Partea ta arată <b>ce este un proiect</b> și <b>cine are legătură cu el</b> (stakeholderii).</p>
+      <div class="say"><b>Spui:</b> Până acum am văzut cum se planifică un proiect. Eu vă arăt ce înseamnă, de fapt, un proiect și cine sunt oamenii care îl influențează sau pe care îi influențează.</div>
+    </div>
+    <div class="card">
+      <h2>Ce a spus A înainte de tine</h2>
+      <ul>
+        <li><b>Gantt:</b> diagramă cu bare pe axa timpului; arată planul și progresul. Are peste 100 de ani (Henry Gantt).</li>
+        <li><b>Drum critic (CPM, 1957):</b> cel mai lung lanț de activități. Dacă o activitate de pe el întârzie, întârzie tot proiectul. Celelalte au rezervă (slack).</li>
+        <li><b>PERT (1958):</b> ca CPM, dar cu trei estimări (optimist, probabil, pesimist). Folosit la rachetele Polaris.</li>
+        <li><b>Legea lui Brooks:</b> mai mulți oameni într-un proiect software întârziat îl întârzie și mai mult, pentru că cresc canalele de comunicare, n(n−1)/2, și trebuie instruiți noii veniți.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Dacă ai doar 10 minute, învață asta</h2>
+      <ul>
+        <li><b>Proiect</b> = efort temporar pentru un produs, serviciu sau rezultat unic. Patru trăsături: temporar, unic, elaborare progresivă, constrângeri de resurse.</li>
+        <li><b>Proiect vs. operațional:</b> proiectul se termină; operațional susține activitatea continuu.</li>
+        <li><b>Stakeholder</b> = persoană sau organizație implicată sau afectată de proiect. Trei cercuri: interni, de mijloc, externi.</li>
+        <li>Din <b>nouă competențe</b> ale managerului de proiect, doar una e strict tehnică.</li>
+      </ul>
+    </div>
+    <div class="warn">Slide-ul 17 (putere–interes) NU este din curs. L-am adăugat noi ca aplicație practică. Spune asta dacă te întreabă cineva.</div>
+    <div class="warn">Dacă ești în urmă cu timpul, sari peste slide-urile 12 (program/portofoliu) și 14 (cele 7 faze).</div>
+  </section>
+
+  <section class="panel" id="p-slides"></section>
+
+  <section class="panel" id="p-test">
+    <div class="score" id="score"></div>
+    <div class="card fc" id="fc"></div>
+    <div class="row">
+      <button class="btn alt" id="shuffle" type="button">Amestecă</button>
+      <button class="btn alt" id="reset" type="button">Reia testul</button>
+    </div>
+  </section>
+
+  <section class="panel" id="p-gloss">
+    <input class="search" id="gsearch" type="search" placeholder="Caută un termen" aria-label="Caută în glosar">
+    <div class="card"><dl id="gl"></dl></div>
+  </section>
+
+  <section class="panel" id="p-poll">
+    <div class="card">
+      <h2>Cum rulezi poll-ul (tu și A)</h2>
+      <ul>
+        <li><b>Pe PC:</b> deschide într-un tab separat <a href="/master">/master</a> și intră cu PIN-ul. Nu îl scrie niciodată pe slide.</li>
+        <li><b>La o întrebare marcată POLL:</b> apeși Start lângă ea. Publicul vede întrebarea pe telefon. Aștepți ~30 de secunde.</li>
+        <li><b>Pentru rezultate:</b> apeși „Stop + arată rezultate”. Graficul apare pe telefoane și pe panoul tău. Treci pe tab-ul panoului ca să îl arăți sălii, apoi te întorci în PowerPoint.</li>
+        <li><b>Înainte de prezentare:</b> testează cu telefonul tău, apoi șterge voturile de test cu „Șterge voturile la această întrebare”.</li>
+        <li><b>Dacă pică internetul:</b> sari peste poll și întreabă cu mâna sus. Slide-urile merg fără net.</li>
+        <li><b>Întrebările la care pornești poll:</b> 1 (slide 3, A), 2 (slide 6, A), 3 (slide 9, A), 4 (slide 18, tu), 5 (slide 19, împreună).</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+const SLIDES = [
+  { n: 10, t: "Ce este, de fapt, un proiect?", m: "1 min",
+    idea: "Un proiect este un efort temporar realizat pentru crearea unui produs, serviciu sau rezultat unic (definiția PMBOK).",
+    pts: ["Temporar: are început și sfârșit. Se poate încheia și prin eșec. Rezultatul poate dura, proiectul nu.", "Unic: produsul, serviciul sau cunoștințele livrate nu se repetă identic.", "Elaborare progresivă: îl definești pe pași și incremente, nu totul dintr-o dată.", "Constrângeri de resurse: timp, bani, oameni limitați."],
+    say: "Un proiect e ceva cu început și sfârșit, care produce ceva unic. Dar ce rămâne după el, de exemplu o aplicație, poate fi folosit ani de zile.",
+    q: "Echipa lansează aplicația, iar ea rămâne în folosință ani de zile. Proiectul s-a încheiat la lansare? Ce urmează după?",
+    a: "Da, proiectul de dezvoltare s-a încheiat la livrare. Ce urmează (suport, corecții, adăugiri mici) este activitate operațională, adică menținere. Dacă apar schimbări mari, se pornește un proiect nou. Slide-ul următor explică diferența." },
+  { n: 11, t: "Proiect sau operațional?", m: "1,5 min",
+    idea: "Ambele sunt făcute de oameni, cu resurse limitate, și sunt planificate, executate și controlate. Diferența: proiectul urmărește un obiectiv și se termină; operațional susține business-ul și continuă.",
+    pts: ["Pregătirea cinei: depinde. Banchet unic = proiect; masă zilnică = operațional.", "Fabricarea unei mașini: operațional (producție în serie).", "Design-ul unei mașini: proiect (rezultat unic).", "Redactarea unui articol: proiect (rezultat unic, cu termen).", "Dezvoltarea unui sistem software: proiect.", "Menținerea unui sistem software: operațional (o versiune majoră poate fi proiect).", "Managementul personalului: operațional."],
+    say: "Întrebați-vă: se termină? Produce ceva unic? Dacă da la amândouă, e proiect. Dacă se repetă și susține activitatea de zi cu zi, e operațional.",
+    tip: "Pe slide verdictele sunt deja scrise. Cere sălii întâi părerea, apoi arată slide-ul. Cazurile de graniță (cina, mentenanța) sunt locul unde apare discuția." },
+  { n: 12, t: "Subproiect, proiect, program, portofoliu", m: "0,5 min",
+    idea: "Patru niveluri de grupare.",
+    pts: ["Subproiect: parte dintr-un proiect, administrată ca proiect.", "Proiect: efort temporar pentru un rezultat unic.", "Program: proiecte înrudite, gestionate coordonat pentru un beneficiu.", "Portofoliu: proiecte/programe fără legătură, grupate pentru obiective strategice."],
+    say: "O bancă are un portofoliu cu mai multe inițiative. Aplicația mobilă este un program, iar versiunea de iOS este un proiect din el.",
+    tip: "Exemplul cu banca este al nostru, nu din curs. Dacă ești în urmă cu timpul, treci repede sau sari peste." },
+  { n: 13, t: "Cinci tipuri de proiecte software", m: "1,5 min",
+    idea: "În carieră poți lucra pe cinci tipuri de proiecte software.",
+    pts: ["A. Dezvoltare de aplicații: desktop, web, mobil. One-off, off-the-shelf sau off-the-shelf customizat (ERP).", "B. Reingineria proceselor și sistemelor: schimbi modul de lucru al organizației; ample; adesea cu ERP.", "C. Integrarea sistemelor: orizontală (sisteme similare) sau verticală (etape ale unei proceduri).", "D. Consultanță: expertiză adusă din exterior.", "E. Instalare și training: sursă de venit și în open source."],
+    q: "La ce categorie intră un proiect personal pe care îl aveți sau l-ați avut?",
+    a: "Ia 2–3 răspunsuri. Ghidaj: o aplicație de la facultate = A; trecerea unei firme de la Excel la un ERP = B; legarea a două aplicații între ele = C. Nu există un singur răspuns corect; important e să justifice." },
+  { n: 14, t: "Cele 7 faze ale oricărui proiect", m: "0,5 min",
+    idea: "Entuziasm → deziluzie → confuzie → panică → căutarea vinovaților → pedepsirea nevinovaților → promovarea celor neparticipanți.",
+    pts: [],
+    say: "Este o glumă din curs, dar are miez: fiecare fază apare când lipsesc procesul și comunicarea. Graficul meu este doar ilustrativ, nu date reale.",
+    tip: "Slide de relaxare. Dacă ești în urmă cu timpul, îl poți sări." },
+  { n: 15, t: "Stakeholderii", m: "1,5 min",
+    idea: "Stakeholder = individ sau organizație implicată activ într-un proiect sau al cărei interes poate fi afectat, pozitiv sau negativ, de realizarea lui (PMBOK).",
+    pts: ["Au influențe și responsabilități diferite și pot juca roluri diferite.", "Pot avea impact pozitiv sau negativ.", "Pot fi greu de identificat; lipsa implicării lor poate dăuna.", "Managerul de proiect și echipa sunt tot stakeholderi.", "Interni: echipa de proiect și echipa de management.", "De mijloc: client/utilizator, sponsor (finanțează), organizația participantă.", "Externi: influencerii; nu sunt în proiect, dar îi pot schimba cursul."],
+    say: "Un stakeholder ignorat nu dispare. Apare târziu, ca risc sau ca schimbare de cerințe." },
+  { n: 16, t: "Exercițiu: identificați stakeholderii", m: "1,5 min",
+    idea: "Împarte sala în grupuri mici. Fiecare ia un proiect și are ~1 minut să găsească 3 stakeholderi, dintre care unul „ascuns” (nici sponsor, nici client). Apoi ceri 2–3 răspunsuri.",
+    pts: ["Pod către o insulă: locuitorii, pescarii și cei de pe feribot (pierd venit), autoritățile de mediu, firma constructoare, asiguratorii.", "Groapă de gunoi: vecinii, primăria, autoritățile de mediu, ONG-uri, firma de salubritate, fermierii din zonă.", "Spreadsheet open source: dezvoltatorii voluntari, comunitatea, firmele care îl adoptă, concurenții comerciali.", "Aplicație web pentru masa corporală: utilizatorii, medici/nutriționiști, magazinele de aplicații, autoritatea de protecție a datelor, investitorii.", "OpenOffice pe Android: Google (platforma), comunitatea OpenOffice, utilizatorii, producătorii de telefoane."] },
+  { n: 17, t: "Putere vs. interes", m: "1 min",
+    idea: "Instrument practic pentru a decide cât timp dedici fiecărui stakeholder.",
+    warn: "Acest instrument NU este din curs. L-am adăugat noi ca aplicație a ideii din curs că stakeholderii au influențe diferite și trebuie implicați.",
+    pts: ["Putere mare + interes mare: gestionezi îndeaproape (sponsorul).", "Putere mare + interes mic: menții mulțumit (magazinele de aplicații, autoritatea de date).", "Putere mică + interes mare: informezi (utilizatorii, medicii).", "Putere mică + interes mic: monitorizezi (concurenții)."],
+    say: "Nu toți stakeholderii cer aceeași atenție. Cu unii vorbești zilnic, pe alții doar îi informezi.",
+    q: "Ai muta pe cineva? De ce utilizatorii au putere mică, deși produsul e făcut pentru ei?",
+    a: "Individual pot puțin, dar împreună, prin recenzii și abandon, pot mult. Discuția este deschisă, nu există un răspuns unic." },
+  { n: 18, t: "Managerul de proiect: tehnic sau om?", m: "1,5 min",
+    idea: "Persoana responsabilă cu gestiunea proiectului și a așteptărilor stakeholderilor.",
+    pts: ["Oameni: comunicare și negociere, abilități de leader, bun simț și stil.", "Mindset: orientare către scop, predispoziție către risc, gândire creativă, corectitudine profesională.", "Tehnic: cunoștințe tehnice solide."],
+    say: "Din nouă competențe doar una e strict tehnică. Nu înseamnă că tehnicul nu contează, ci că un manager se măsoară mai ales prin oameni și decizii.",
+    q: "POLL 4: ce manager alegi, un tehnician genial cu comunicare slabă sau un comunicator excelent cu tehnic mediu?",
+    a: "Pentru comunicator: coordonează, negociază, ține stakeholderii aliniați. Pentru tehnician: judecă estimările și riscurile, are credibilitate în echipă. Concluzia bună: depinde de proiect, dar în echipă ai nevoie de ambele." },
+  { n: 19, t: "Mic exercițiu de gândire (cu A)", m: "1,5 min",
+    idea: "Ce a lipsit cel mai mult în ultimul proiect de echipă care a mers prost? Variante: un plan clar, un stakeholder implicat, comunicarea.",
+    pts: ["Pornești POLL 5, arăți rezultatul și iei 2 comentarii.", "Mesajul: toate trei sunt probleme de management, nu de cod."] },
+  { n: 20, t: "Cadrul de gestiune a proiectului", m: "0,5 min",
+    idea: "Cele 8 preocupări din curs, care sunt chiar restul materiei.",
+    pts: ["Fezabilitate, scopuri, timp, costuri.", "Schimbări și configurații, calitate, riscuri, resurse umane."],
+    say: "Gantt, CPM și PERT răspund la timp. Stakeholderii leagă scopul de oameni. Brooks arată limita resurselor umane." },
+  { n: 21, t: "Ce luăm cu noi", m: "0,5 min",
+    idea: "Trei concluzii.",
+    pts: ["Procesul bate tehnica: cod bun fără proces nu garantează un produs livrat.", "Planul e instrument, nu dogmă.", "Oamenii sunt proiectul: stakeholderii și echipa decid reușita mai des decât tehnologia."],
+    tip: "Apoi: „Întrebări?”. Dacă nu vine nimic, pune tu una: „Cine a avut un stakeholder pe care l-a uitat și l-a costat?”" }
+];
+
+const CARDS = [
+  { q: "Ce este un proiect?", a: "Un efort temporar realizat pentru crearea unui produs, serviciu sau rezultat unic (PMBOK).", s: 10 },
+  { q: "Care sunt cele 4 caracteristici ale unui proiect?", a: "Temporar, unic, elaborare progresivă, constrângeri de resurse.", s: 10 },
+  { q: "Proiectul s-a încheiat la lansarea aplicației. Ce urmează după?", a: "Activitate operațională (menținere). Schimbările mari pot deveni un proiect nou.", s: 10 },
+  { q: "Care e diferența dintre proiect și activitate operațională?", a: "Proiectul urmărește un obiectiv și se termină. Operațional susține business-ul continuu. Ambele: oameni, resurse limitate, planificare, execuție, control.", s: 11 },
+  { q: "Fabricarea unei mașini: proiect sau operațional?", a: "Operațional (producție în serie). Design-ul unei mașini este proiect.", s: 11 },
+  { q: "Menținerea unui sistem software: proiect sau operațional?", a: "Operațional. O versiune majoră poate fi tratată ca proiect.", s: 11 },
+  { q: "Ce e un program și ce e un portofoliu?", a: "Program: proiecte înrudite gestionate coordonat pentru un beneficiu. Portofoliu: proiecte/programe fără legătură, grupate pentru obiective strategice.", s: 12 },
+  { q: "Numește cele 5 tipuri de proiecte software.", a: "A. Dezvoltare de aplicații. B. Reingineria proceselor și sistemelor. C. Integrarea sistemelor. D. Consultanță. E. Instalare și training.", s: 13 },
+  { q: "Ce înseamnă integrare orizontală și verticală?", a: "Orizontală: sisteme care fac operațiuni similare. Verticală: sisteme care automatizează etape diferite ale unei proceduri.", s: 13 },
+  { q: "Ce înseamnă one-off, off-the-shelf și off-the-shelf customizat?", a: "One-off: făcut special pentru un client. Off-the-shelf: pentru mulți utilizatori. Customizat: standard, dar adaptat mult (de exemplu ERP).", s: 13 },
+  { q: "Ce este un stakeholder?", a: "Individ sau organizație implicată activ într-un proiect sau al cărei interes poate fi afectat, pozitiv sau negativ, de proiect (PMBOK).", s: 15 },
+  { q: "Cele trei cercuri de stakeholderi?", a: "Interni (echipa, managementul), de mijloc (client/utilizator, sponsor, organizația participantă), externi (influenceri).", s: 15 },
+  { q: "Managerul de proiect este stakeholder?", a: "Da. Și el, și echipa de proiect.", s: 15 },
+  { q: "De ce contează stakeholderii greu de identificat?", a: "Lipsa implicării lor poate influența negativ proiectul; apar târziu ca risc sau schimbare de cerințe.", s: 15 },
+  { q: "Stakeholderi pentru un pod către o insulă?", a: "Locuitorii, pescarii și cei de pe feribot, autoritățile de mediu, firma constructoare, asiguratorii.", s: 16 },
+  { q: "Cele 4 cadrane putere–interes?", a: "Mare/mare: gestionezi îndeaproape. Putere mare/interes mic: menții mulțumit. Putere mică/interes mare: informezi. Mică/mică: monitorizezi. (Instrument adăugat de noi, nu din curs.)", s: 17 },
+  { q: "Ce face un manager de proiect?", a: "Răspunde de gestiunea proiectului și a așteptărilor stakeholderilor.", s: 18 },
+  { q: "Câte competențe ale managerului sunt strict tehnice?", a: "Una din nouă: cunoștințe tehnice solide. Restul: comunicare și negociere, risc, scop, leadership, creativitate, corectitudine, bun simț, stil.", s: 18 },
+  { q: "Care sunt cele 8 preocupări ale cadrului de gestiune?", a: "Fezabilitate, scopuri, timp, costuri, schimbări și configurații, calitate, riscuri, resurse umane.", s: 20 },
+  { q: "Matricea putere–interes e din curs?", a: "Nu. E un instrument cunoscut de analiză a stakeholderilor, folosit de noi ca aplicație a ideii din curs.", s: 17 },
+  { q: "Cum explici legea lui Brooks? (răspunde A)", a: "Mai mulți oameni într-un proiect întârziat îl întârzie și mai mult: cresc canalele de comunicare n(n−1)/2 și trebuie instruiți noii veniți.", s: 9 },
+  { q: "Ce arată drumul critic? (răspunde A)", a: "Cel mai lung lanț de activități. Dacă una de pe el întârzie, întârzie tot proiectul. Celelalte au rezervă (slack).", s: 8 }
+];
+
+const GLOSS = [
+  ["PMBOK", "Ghid de bune practici în managementul proiectelor; sursa definițiilor de proiect și stakeholder."],
+  ["Stakeholder", "Persoană sau organizație implicată în proiect sau afectată de el."],
+  ["Sponsor", "Cine finanțează proiectul."],
+  ["Elaborare progresivă", "Definire pe pași și incremente."],
+  ["Subproiect", "Parte dintr-un proiect, administrată ca proiect."],
+  ["Program", "Proiecte înrudite gestionate coordonat."],
+  ["Portofoliu", "Proiecte/programe fără legătură, grupate strategic."],
+  ["ERP", "Sistem integrat pentru procesele unei firme (contabilitate, stocuri, resurse umane)."],
+  ["One-off", "Sistem făcut special pentru un singur client."],
+  ["Off-the-shelf", "Produs standard pentru mulți utilizatori."],
+  ["Integrare orizontală", "Legarea sistemelor care fac operațiuni similare."],
+  ["Integrare verticală", "Legarea sistemelor care automatizează etape diferite ale unei proceduri."],
+  ["Operațional", "Activitate continuă care susține business-ul."],
+  ["Drum critic (CPM)", "Cel mai lung lanț de activități; întârzierea lui întârzie proiectul."],
+  ["Slack", "Rezerva de timp a unei activități care nu e pe drumul critic."],
+  ["PERT", "Planificare cu trei estimări per activitate: optimist, probabil, pesimist."],
+  ["Gantt", "Diagramă cu bare pe axa timpului, pentru plan și progres."],
+  ["Legea lui Brooks", "Mai mulți oameni într-un proiect întârziat îl întârzie și mai mult."]
+];
+
+const K = "ghidB_done_v1";
+let done = {};
+try { done = JSON.parse(localStorage.getItem(K) || "{}"); } catch (e) { done = {}; }
+function save() { try { localStorage.setItem(K, JSON.stringify(done)); } catch (e) { return; } }
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+
+function updateProgress() {
+  const n = SLIDES.filter(s => done[s.n]).length;
+  document.getElementById("pbar").style.width = Math.round(n * 100 / SLIDES.length) + "%";
+  document.getElementById("ptxt").textContent = n + " / " + SLIDES.length + " slide-uri învățate";
+}
+
+function renderSlides() {
+  const host = document.getElementById("p-slides");
+  host.replaceChildren();
+  SLIDES.forEach(s => {
+    const d = el("details", "slide" + (done[s.n] ? " is-done" : ""));
+    const sum = el("summary");
+    sum.append(el("span", "num", String(s.n)), el("span", "ttl", s.t), el("span", "time", s.m));
+    const body = el("div", "body");
+    body.append(el("h3", "", "Ideea"), el("div", "", s.idea));
+    if (s.warn) body.append(el("div", "warn", s.warn));
+    if (s.pts && s.pts.length) {
+      body.append(el("h3", "", "Ce trebuie să știi"));
+      const ul = el("ul");
+      s.pts.forEach(p => ul.append(el("li", "", p)));
+      body.append(ul);
+    }
+    if (s.say) { const sy = el("div", "say"); sy.append(el("b", "", "Spui: "), document.createTextNode(s.say)); body.append(sy); }
+    if (s.q) {
+      body.append(el("h3", "", "Întrebare"), el("div", "", s.q));
+      const det = el("details");
+      det.append(el("summary", "", "Arată răspunsul"));
+      det.append(el("div", "say", s.a));
+      body.append(det);
+    }
+    if (s.tip) body.append(el("h3", "", "Sfat"), el("div", "", s.tip));
+    const row = el("label", "done-row");
+    const cb = el("input");
+    cb.type = "checkbox";
+    cb.checked = Boolean(done[s.n]);
+    cb.addEventListener("change", () => {
+      done[s.n] = cb.checked;
+      save();
+      d.classList.toggle("is-done", cb.checked);
+      updateProgress();
+    });
+    row.append(cb, document.createTextNode("Am învățat slide-ul"));
+    body.append(row);
+    d.append(sum, body);
+    host.append(d);
+  });
+}
+
+let deck = CARDS.slice(), pos = 0, right = 0, wrong = 0, shown = false;
+function renderCard() {
+  const fc = document.getElementById("fc");
+  fc.replaceChildren();
+  const sc = document.getElementById("score");
+  sc.textContent = "Cartea " + Math.min(pos + 1, deck.length) + " din " + deck.length + " · știu: " + right + " · nu știu: " + wrong;
+  if (pos >= deck.length) {
+    fc.append(el("div", "tag", "Test terminat"), el("div", "q", "Ai răspuns corect la " + right + " din " + deck.length + "."));
+    const again = el("button", "btn", wrong ? "Repetă doar ce nu știai" : "Reia testul");
+    again.type = "button";
+    again.addEventListener("click", () => {
+      deck = wrong ? deck.filter(c => c._miss) : CARDS.slice();
+      deck.forEach(c => { c._miss = false; });
+      pos = 0; right = 0; wrong = 0; shown = false;
+      renderCard();
+    });
+    fc.append(again);
+    return;
+  }
+  const c = deck[pos];
+  fc.append(el("div", "tag", "Slide " + c.s), el("div", "q", c.q));
+  if (!shown) {
+    const b = el("button", "btn", "Arată răspunsul");
+    b.type = "button";
+    b.addEventListener("click", () => { shown = true; renderCard(); });
+    fc.append(b);
+  } else {
+    fc.append(el("div", "a", c.a));
+    const row = el("div", "row");
+    const ok = el("button", "btn ok", "Știam");
+    ok.type = "button";
+    ok.addEventListener("click", () => { right++; pos++; shown = false; renderCard(); });
+    const no = el("button", "btn no", "Nu știam");
+    no.type = "button";
+    no.addEventListener("click", () => { wrong++; c._miss = true; pos++; shown = false; renderCard(); });
+    row.append(ok, no);
+    fc.append(row);
+  }
+}
+
+function shuffleDeck() {
+  for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+  pos = 0; right = 0; wrong = 0; shown = false;
+  renderCard();
+}
+
+function renderGloss(filter) {
+  const dl = document.getElementById("gl");
+  dl.replaceChildren();
+  const f = (filter || "").toLowerCase();
+  GLOSS.filter(g => !f || g[0].toLowerCase().includes(f) || g[1].toLowerCase().includes(f)).forEach(g => {
+    dl.append(el("dt", "", g[0]), el("dd", "", g[1]));
+  });
+}
+
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-pressed", String(x === t)));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === "p-" + t.dataset.p));
+  window.scrollTo({ top: 0 });
+}));
+document.getElementById("shuffle").addEventListener("click", shuffleDeck);
+document.getElementById("reset").addEventListener("click", () => {
+  deck = CARDS.slice(); deck.forEach(c => { c._miss = false; });
+  pos = 0; right = 0; wrong = 0; shown = false; renderCard();
+});
+document.getElementById("gsearch").addEventListener("input", e => renderGloss(e.target.value));
+
+renderSlides();
+renderCard();
+renderGloss("");
+updateProgress();
+</script>
+</body>
+</html>
