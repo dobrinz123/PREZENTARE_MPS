@@ -209,8 +209,8 @@ async function build() {
       x: 0.6, y: 2.6, w: 6.3, h: 0.9, fontSize: 18, color: C.background2,
     });
     s.addNotes(
-      "A (30s). Salut. Deschidem cu o provocare: poți scrie cod impecabil și totuși să pierzi proiectul. Pe parcursul a 25 de minute vom avea 3 voturi rapide, 2 mini-exerciții și o dezbatere în două tabere. Rugăm sala să participe: nu vorbim doar noi.\n" +
-        "Sursa conținutului: cursurile G-C01.00 (Introducere) și G-C01.01 (Proiecte și Stakeholderi)."
+      "A (0,5 min). Salut. Deschidem cu o provocare: poți scrie cod impecabil și totuși să pierzi proiectul. Pe parcursul a 25 de minute vom avea 3 voturi rapide, 2 mini-exerciții și o dezbatere în două tabere. Rugăm sala să participe: nu vorbim doar noi.\n" +
+        "Sursa conținutului: cursurile G-C01.00 (Introducere) și G-C01.01 (Proiecte și Stakeholderi).\nPLAN DE TIMP (25:00, cumulat): titlu + QR 1:30 | hook 3:00 | software special 4:00 | istorie 5:30 | Taylor 7:00 | Gantt 8:00 | drum critic 10:30 | Brooks 12:00 (A predă lui B) | proiect 13:00 | proiect vs operațional 14:30 | program/portofoliu 15:00 | tipuri 16:30 | 7 faze 17:00 | stakeholderi 18:30 | exercițiu stakeholderi 20:00 | putere-interes 21:00 | manager de proiect 22:30 | exercițiu final 24:00 | cadru 24:30 | concluzii și întrebări 25:00. Dacă rămâi în urmă, sari peste slide-ul cu program/portofoliu și peste cel cu cele 7 faze (1 minut recuperat)."
     );
   }
 
@@ -231,8 +231,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Cod impecabil, proiect pierdut?", "A", "2'", "Deschidere",
-      "A (2 min). Idee din Motivație (2): tehnicile sunt inutile fără proces. Citim cele 3 scenarii și pornim POLL-ul 1 din panou: care dintre ele ucide cele mai multe proiecte reale? După ~30 secunde apăsăm Stop și arătăm graficul. Provocăm: cineva a trăit un caz? Concluzia: cerințele, testarea și livrarea sunt probleme de PROCES, nu doar de tehnică.");
+    const s = lightSlide("Cod impecabil, proiect pierdut?", "A", "1,5'", "Deschidere",
+      "A (1,5 min). Idee din Motivație (2): tehnicile sunt inutile fără proces. Citim cele 3 scenarii și pornim POLL-ul 1 din panou: care dintre ele ucide cele mai multe proiecte reale? După ~30 secunde apăsăm Stop și arătăm graficul. Provocăm: cineva a trăit un caz? Concluzia: cerințele, testarea și livrarea sunt probleme de PROCES, nu doar de tehnică.");
     const cs = [
       { n: "1", i: ic.fileSig, c: C.accent4, t: "Cerințe scrise perfect", d: "…dar nimeni nu controlează cum se acceptă și se urmăresc modificările." },
       { n: "2", i: ic.hourglass, c: C.accent3, t: "Teste excelente", d: "…dar estimarea a fost prea optimistă, lansarea a întârziat și nu a mai rămas timp de testat." },
@@ -250,8 +250,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("De ce e special software-ul?", "A", "2'", "Deschidere",
-      "A (2 min). Șase motive pentru care MPS e interesant și greu: produs intangibil, flexibil, irepetabil, proces flexibil, complexitate exponențială, sisteme critice pentru viață (control aeronave). Întrebare scurtă către sală: ce înseamnă să 'termini' un lucru intangibil? Cum arăți progresul? Facem legătura cu Gantt-ul din slide-urile următoare.");
+    const s = lightSlide("De ce e special software-ul?", "A", "1'", "Deschidere",
+      "A (1 min). Șase motive pentru care MPS e interesant și greu: produs intangibil, flexibil, irepetabil, proces flexibil, complexitate exponențială, sisteme critice pentru viață (control aeronave). Întrebare scurtă către sală: ce înseamnă să 'termini' un lucru intangibil? Cum arăți progresul? Facem legătura cu Gantt-ul din slide-urile următoare.");
     const items = [
       { i: ic.cloud, t: "Produs intangibil", d: "Nu-l poți vedea sau atinge; progresul e greu de măsurat", c: C.accent4 },
       { i: ic.sliders, t: "Produs flexibil", d: "Dimensiuni și constrângeri diferite de la caz la caz", c: C.accent2 },
@@ -275,8 +275,8 @@ async function build() {
   pres.addSection({ title: "Istorie" });
 
   {
-    const s = lightSlide("Scurtă istorie a managementului de proiect", "A", "2'", "Istorie",
-      "A (2 min). Firul roșu: fiecare epocă a rezolvat o durere. Gantt a separat munca planificată de progres; CPM și PERT au răspuns la 'ce poate întârzia proiectul?'; anii 60 aduc standardizare (WBS, EVA), anii 70 aduc software-ul în ecuație (cascadă, Mythical Man-Month), anii 80 estimarea (Function Points, COCOMO), anii 90 calitatea totală, iar azi agilitatea și feedback-ul constant. Întrebare: care dintre aceste idei folosiți deja fără să știți numele?");
+    const s = lightSlide("Scurtă istorie a managementului de proiect", "A", "1,5'", "Istorie",
+      "A (1,5 min). Firul roșu: fiecare epocă a rezolvat o durere. Gantt a separat munca planificată de progres; CPM și PERT au răspuns la 'ce poate întârzia proiectul?'; anii 60 aduc standardizare (WBS, EVA), anii 70 aduc software-ul în ecuație (cascadă, Mythical Man-Month), anii 80 estimarea (Function Points, COCOMO), anii 90 calitatea totală, iar azi agilitatea și feedback-ul constant. Întrebare: care dintre aceste idei folosiți deja fără să știți numele?");
     const ev = [
       { y: "1900s", t: "Taylor", d: "Scientific Management: prima teorie despre muncă și management", c: C.accent3 },
       { y: "1910s", t: "Gantt", d: "Planificarea separă munca planificată de progres (șantiere navale)", c: C.accent4 },
@@ -302,8 +302,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Taylor vs. Gantt: control sau încredere?", "A", "2'", "Istorie",
-      "A (2 min), prima DEZBATERE scurtă. Taylor (începutul anilor 1900) pornește de la o viziune negativă: muncitorii în sarcini repetitive lucrează la minimul necesar. Contribuții reale: definirea științifică a muncii, selecția personalului, separarea responsabilităților, stimulente și pauze. Gantt (Primul Război Mondial) introduce vizualizarea planului și a progresului. ÎNTREBARE: sistemele moderne de time tracking și KPI sunt Taylor în variantă digitală? Luăm 2 opinii pro și 2 contra, apoi legăm de Gantt: vizibilitatea poate fi și instrument de colaborare, nu doar de control.");
+    const s = lightSlide("Taylor vs. Gantt: control sau încredere?", "A", "1,5'", "Istorie",
+      "A (1,5 min), prima DEZBATERE scurtă. Taylor (începutul anilor 1900) pornește de la o viziune negativă: muncitorii în sarcini repetitive lucrează la minimul necesar. Contribuții reale: definirea științifică a muncii, selecția personalului, separarea responsabilităților, stimulente și pauze. Gantt (Primul Război Mondial) introduce vizualizarea planului și a progresului. ÎNTREBARE: sistemele moderne de time tracking și KPI sunt Taylor în variantă digitală? Luăm 2 opinii pro și 2 contra, apoi legăm de Gantt: vizibilitatea poate fi și instrument de colaborare, nu doar de control.");
     card(s, MX, 1.2, 4.4, 2.95, C.background2, "Card Taylor");
     s.addImage({ path: path.join(ASSETS, "taylor.png"), x: MX + 0.2, y: 1.45, w: 0.95, h: 1.72, objectName: "Foto Taylor" });
     txt(s, [{ text: "F. W. Taylor", options: { bold: true, fontSize: 16, breakLine: true } }, { text: "Scientific Management, anii 1900", options: { fontSize: 11, color: C.text2 } }], { x: MX + 1.35, y: 1.45, w: 2.9, h: 0.7 });
@@ -326,8 +326,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Gantt: planul vizibil dintr-o privire", "A", "1,5'", "Istorie",
-      "A (1,5 min). Exemplu de proiect software (ilustrativ). Axa orizontală este timpul, fiecare bară este o activitate, bara umplută este progresul real. Ce NU arată Gantt-ul: dependențele logice complete și ce activități chiar contează pentru termen. Exact această lipsă motivează CPM, pe care îl vedem imediat. Imaginea originală din curs (Clark, Wallace, Gantt) este în dreapta, ca să vedeți că ideea are peste un secol.");
+    const s = lightSlide("Gantt: planul vizibil dintr-o privire", "A", "1'", "Istorie",
+      "A (1 min). Exemplu de proiect software (ilustrativ). Axa orizontală este timpul, fiecare bară este o activitate, bara umplută este progresul real. Ce NU arată Gantt-ul: dependențele logice complete și ce activități chiar contează pentru termen. Exact această lipsă motivează CPM, pe care îl vedem imediat. Imaginea originală din curs (Clark, Wallace, Gantt) este în dreapta, ca să vedeți că ideea are peste un secol.");
     const tasks = [
       { n: "Cerințe", st: 0, d: 2, p: 1 },
       { n: "Design", st: 2, d: 2, p: 1 },
@@ -362,8 +362,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Ce întârzie lansarea aplicației?", "A", "3'", "Istorie",
-      "A (3 min), EXERCIȚIU INTERACTIV, varianta simplă a drumului critic. Povestim: avem o aplicație de lansat. Cerințele durează 3 zile. Apoi lucrează în paralel două echipe: Backend (4 zile) urmat de API (5 zile) = 9 zile, și Design (2 zile) urmat de Frontend (3 zile) = 5 zile. La final, testarea și lansarea durează 2 zile și pot începe doar când AMBELE linii sunt gata. Total: 3 + 9 + 2 = 14 zile. Linia Backend + API este cea mai lungă, deci decide data lansării: este DRUMUL CRITIC. Linia Design + Frontend așteaptă 4 zile, adică are rezervă (slack) de 4 zile. Întrebări către sală: 1) Dacă Frontend-ul întârzie 2 zile, se amână lansarea? (Nu, are 4 zile rezervă.) 2) Dacă Backend-ul întârzie 2 zile? (Da, lansarea trece la 16 zile.) Legătura istorică: asta au rezolvat CPM (1957) și PERT (1958): arată ce activități nu au voie să întârzie. PERT folosește 3 estimări (optimist, probabil, pesimist) în loc de una.");
+    const s = lightSlide("Ce întârzie lansarea aplicației?", "A", "2,5'", "Istorie",
+      "A (2,5 min), EXERCIȚIU INTERACTIV, varianta simplă a drumului critic. Povestim: avem o aplicație de lansat. Cerințele durează 3 zile. Apoi lucrează în paralel două echipe: Backend (4 zile) urmat de API (5 zile) = 9 zile, și Design (2 zile) urmat de Frontend (3 zile) = 5 zile. La final, testarea și lansarea durează 2 zile și pot începe doar când AMBELE linii sunt gata. Total: 3 + 9 + 2 = 14 zile. Linia Backend + API este cea mai lungă, deci decide data lansării: este DRUMUL CRITIC. Linia Design + Frontend așteaptă 4 zile, adică are rezervă (slack) de 4 zile. Întrebări către sală: 1) Dacă Frontend-ul întârzie 2 zile, se amână lansarea? (Nu, are 4 zile rezervă.) 2) Dacă Backend-ul întârzie 2 zile? (Da, lansarea trece la 16 zile.) Legătura istorică: asta au rezolvat CPM (1957) și PERT (1958): arată ce activități nu au voie să întârzie. PERT folosește 3 estimări (optimist, probabil, pesimist) în loc de una.");
     txt(s, "Două echipe lucrează în paralel. Lungimea fiecărei bare este durata în zile.", { x: MX, y: 0.95, w: 9, h: 0.3, fontSize: 12, color: C.text2 });
     const u = 0.62;
     const x0 = MX;
@@ -392,8 +392,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Legea lui Brooks și explozia canalelor", "A", "2,5'", "Istorie",
-      "A (2,5 min), încheiem blocul A. The Mythical Man-Month (Brooks, 1975): adăugarea de oameni într-un proiect software întârziat îl întârzie și mai mult. Motivul matematic: canalele de comunicare cresc ca n(n-1)/2, deci pătratic. 5 oameni = 10 canale, 20 de oameni = 190 canale. Plus costul de instruire a noilor veniți. DEZBATERE RAPIDĂ: este legea lui Brooks încă valabilă cu microservicii, documentație bună și tool-uri de colaborare? Luăm 2 argumente. Predăm apoi lui B: 'dacă proiectele sunt atât de grele de gestionat, hai să definim ce este de fapt un proiect'.");
+    const s = lightSlide("Legea lui Brooks și explozia canalelor", "A", "1,5'", "Istorie",
+      "A (1,5 min), încheiem blocul A. The Mythical Man-Month (Brooks, 1975): adăugarea de oameni într-un proiect software întârziat îl întârzie și mai mult. Motivul matematic: canalele de comunicare cresc ca n(n-1)/2, deci pătratic. 5 oameni = 10 canale, 20 de oameni = 190 canale. Plus costul de instruire a noilor veniți. DEZBATERE RAPIDĂ: este legea lui Brooks încă valabilă cu microservicii, documentație bună și tool-uri de colaborare? Luăm 2 argumente. Predăm apoi lui B: 'dacă proiectele sunt atât de grele de gestionat, hai să definim ce este de fapt un proiect'.");
     s.addChart(pres.charts.BAR, [{ name: "Canale de comunicare", labels: ["3", "5", "8", "10", "15", "20"], values: [3, 10, 28, 45, 105, 190] }], {
       x: MX, y: 1.2, w: 5.6, h: 3.7, barDir: "col",
       chartColors: [H.accent4],
@@ -417,8 +417,8 @@ async function build() {
   pres.addSection({ title: "Proiecte" });
 
   {
-    const s = lightSlide("Ce este, de fapt, un proiect?", "B", "1,5'", "Proiecte",
-      "B (1,5 min), preia scena. Definiția (PMBOK): efort temporar pentru un produs, serviciu sau rezultat unic. Cele patru caracteristici: TEMPORAR (început și sfârșit; rezultatele pot dura), UNIC, ELABORARE PROGRESIVĂ (pași și incremente, nu totul definit de la început), CONSTRÂNGERI de resurse. Nuanță importantă: un proiect se poate termina și prin eșec (obiective neîndeplinite). Imaginea din curs arată ciclul de viață: inițiere, planificare, execuție + monitorizare, închidere.");
+    const s = lightSlide("Ce este, de fapt, un proiect?", "B", "1'", "Proiecte",
+      "B (1 min), preia scena. Definiția (PMBOK): efort temporar pentru un produs, serviciu sau rezultat unic. Cele patru caracteristici: TEMPORAR (început și sfârșit; rezultatele pot dura), UNIC, ELABORARE PROGRESIVĂ (pași și incremente, nu totul definit de la început), CONSTRÂNGERI de resurse. Nuanță importantă: un proiect se poate termina și prin eșec (obiective neîndeplinite). Imaginea din curs arată ciclul de viață: inițiere, planificare, execuție + monitorizare, închidere.");
     card(s, MX, 1.2, 9, 1.05, C.text1, "Definitie proiect");
     txt(s, [{ text: "„Un efort temporar realizat pentru crearea unui produs, serviciu sau rezultat unic.”", options: { italic: true, fontSize: 17, color: C.background1 } }, { text: "   PMBOK", options: { bold: true, fontSize: 11, color: C.accent1 } }], { x: MX + 0.25, y: 1.2, w: 8.5, h: 1.05, valign: "middle" });
     const chs = [
@@ -440,8 +440,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Proiect sau operațional?", "B", "2'", "Proiecte",
-      "B (2 min). Pentru fiecare exemplu spunem ce reprezintă. Pregătirea cinei: depinde, un banchet unic e proiect, masa zilnică e operațional. Fabricarea unei mașini: operațional (producție în serie, repetitivă). Design-ul unei mașini: proiect (rezultat unic, cu final). Redactarea unui articol: proiect (un rezultat unic, cu termen). Dezvoltarea unui sistem software: proiect. Menținerea unui sistem software: operațional (susține activitatea continuu; o versiune majoră poate fi tratată ca un nou proiect). Managementul personalului: operațional. Ideea: ambele sunt făcute de oameni, cu resurse limitate, planificate, executate și controlate. Diferența: proiectul urmărește un obiectiv și se încheie, operațiunile susțin business-ul. Putem cere sălii întâi părerea, apoi arătăm ce scrie pe slide.");
+    const s = lightSlide("Proiect sau operațional?", "B", "1,5'", "Proiecte",
+      "B (1,5 min). Pentru fiecare exemplu spunem ce reprezintă. Pregătirea cinei: depinde, un banchet unic e proiect, masa zilnică e operațional. Fabricarea unei mașini: operațional (producție în serie, repetitivă). Design-ul unei mașini: proiect (rezultat unic, cu final). Redactarea unui articol: proiect (un rezultat unic, cu termen). Dezvoltarea unui sistem software: proiect. Menținerea unui sistem software: operațional (susține activitatea continuu; o versiune majoră poate fi tratată ca un nou proiect). Managementul personalului: operațional. Ideea: ambele sunt făcute de oameni, cu resurse limitate, planificate, executate și controlate. Diferența: proiectul urmărește un obiectiv și se încheie, operațiunile susțin business-ul. Putem cere sălii întâi părerea, apoi arătăm ce scrie pe slide.");
     const ex = [
       { t: "Pregătirea cinei", i: ic.office, v: "DEPINDE", c: C.accent6, d: "Banchet unic: proiect. Masă zilnică: operațional" },
       { t: "Fabricarea unei mașini", i: ic.cogs, v: "OPERAȚIONAL", c: C.accent3, d: "Producție în serie, se repetă" },
@@ -468,8 +468,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Subproiect, proiect, program, portofoliu", "B", "1'", "Proiecte",
-      "B (1 min). Scară de agregare: subproiectul este o parte administrată ca proiect; proiectul produce un rezultat unic; programul grupează proiecte înrudite gestionate coordonat pentru un beneficiu; portofoliul grupează proiecte/programe fără legătură între ele, doar pentru a fi gestionate strategic. Exemplu rapid: o bancă are un portofoliu (mobile banking, migrare cloud, conformitate), iar 'mobile banking' este un program cu proiecte pentru iOS, Android și backend.");
+    const s = lightSlide("Subproiect, proiect, program, portofoliu", "B", "0,5'", "Proiecte",
+      "B (0,5 min). Scară de agregare: subproiectul este o parte administrată ca proiect; proiectul produce un rezultat unic; programul grupează proiecte înrudite gestionate coordonat pentru un beneficiu; portofoliul grupează proiecte/programe fără legătură între ele, doar pentru a fi gestionate strategic. Exemplu rapid: o bancă are un portofoliu (mobile banking, migrare cloud, conformitate), iar 'mobile banking' este un program cu proiecte pentru iOS, Android și backend.");
     const lv = [
       { t: "Portofoliu", d: "Proiecte/programe fără legătură, grupate pentru obiective strategice", w: 9.0, c: C.text1, tc: C.background1 },
       { t: "Program", d: "Proiecte înrudite, gestionate coordonat pentru un beneficiu", w: 7.2, c: C.accent4, tc: C.background1 },
@@ -506,8 +506,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Cele 7 faze ale oricărui proiect", "B", "1'", "Proiecte",
-      "B (1 min), moment de relaxare din curs. Cele 7 faze umoristice: entuziasm, deziluzie, confuzie, panică, căutarea vinovaților, pedepsirea nevinovaților, promovarea celor neparticipanți. Graficul este ILUSTRATIV, nu date reale. Întrebare: care fază v-a lovit cel mai tare la un proiect de echipă? Mesajul serios: lipsa unui proces și a comunicării duce la acest scenariu, exact de aici se justifică disciplina MPS.");
+    const s = lightSlide("Cele 7 faze ale oricărui proiect", "B", "0,5'", "Proiecte",
+      "B (0,5 min), moment de relaxare din curs. Cele 7 faze umoristice: entuziasm, deziluzie, confuzie, panică, căutarea vinovaților, pedepsirea nevinovaților, promovarea celor neparticipanți. Graficul este ILUSTRATIV, nu date reale. Întrebare: care fază v-a lovit cel mai tare la un proiect de echipă? Mesajul serios: lipsa unui proces și a comunicării duce la acest scenariu, exact de aici se justifică disciplina MPS.");
     s.addChart(pres.charts.LINE, [{ name: "Moral (ilustrativ)", labels: ["Entuziasm", "Deziluzie", "Confuzie", "Panică", "Căutarea vinovaților", "Pedepsirea nevinovaților", "Promovarea celor neparticipanți"], values: [9, 6, 4, 1.5, 2.5, 1, 7.5] }], {
       x: MX, y: 1.2, w: 9, h: 3.8,
       chartColors: [H.accent3], lineSize: 3, lineDataSymbol: "circle", lineDataSymbolSize: 10,
@@ -521,8 +521,8 @@ async function build() {
   pres.addSection({ title: "Stakeholderi" });
 
   {
-    const s = lightSlide("Stakeholderii: cine câștigă sau pierde?", "B", "2'", "Stakeholderi",
-      "B (2 min). Definiția PMBOK: individ sau organizație implicată activ sau al cărei interes poate fi afectat pozitiv sau negativ de proiect. Caracteristici: influențe și responsabilități diferite, roluri multiple, impact pozitiv sau negativ, greu de identificat; lipsa lor de implicare poate dăuna. Managerul și echipa sunt tot stakeholderi. Modelul cu inele din curs: INTERNI (echipa de proiect, echipa de management), DE MIJLOC (client/utilizator, sponsor, organizația participantă), EXTERNI (influenceri). Atenție la influencerii externi: nu sunt în proiect, dar îi pot schimba cursul.");
+    const s = lightSlide("Stakeholderii: cine câștigă sau pierde?", "B", "1,5'", "Stakeholderi",
+      "B (1,5 min). Definiția PMBOK: individ sau organizație implicată activ sau al cărei interes poate fi afectat pozitiv sau negativ de proiect. Caracteristici: influențe și responsabilități diferite, roluri multiple, impact pozitiv sau negativ, greu de identificat; lipsa lor de implicare poate dăuna. Managerul și echipa sunt tot stakeholderi. Modelul cu inele din curs: INTERNI (echipa de proiect, echipa de management), DE MIJLOC (client/utilizator, sponsor, organizația participantă), EXTERNI (influenceri). Atenție la influencerii externi: nu sunt în proiect, dar îi pot schimba cursul.");
     const cx = 2.75;
     const cy = 3.25;
     const rings = [
@@ -552,8 +552,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Exercițiu: identificați stakeholderii", "B", "2'", "Stakeholderi",
-      "B (2 min), EXERCIȚIU. Împărțim sala în 5 grupuri mici (sau perechi). Fiecare ia un proiect și are 60-90 secunde să găsească 3 stakeholderi, dintre care cel puțin unul ascuns (nu sponsor, nu client). Exemple de răspunsuri: Pod către insulă: locuitorii insulei, pescarii și transportatorii pe feribot (pierd venit), autoritățile de mediu, firmele de construcții, asigurători. Groapă de gunoi: vecinii, primăria, autorități de mediu, ONG-uri, firma de salubritate, fermieri din zonă. Spreadsheet open source: dezvoltatori voluntari, comunitatea, companii care îl adoptă, concurenți comerciali. Aplicație de monitorizare a masei corporale: utilizatori, medici/nutriționiști, magazinele de aplicații, autoritatea GDPR, investitori. OpenOffice pe Android: Google, comunitatea OpenOffice, utilizatori, producători de telefoane. Tranziție: pentru aplicația de masă corporală avem o matrice putere-interes pe slide-ul următor.");
+    const s = lightSlide("Exercițiu: identificați stakeholderii", "B", "1,5'", "Stakeholderi",
+      "B (1,5 min), EXERCIȚIU. Împărțim sala în 5 grupuri mici (sau perechi). Fiecare ia un proiect și are 60-90 secunde să găsească 3 stakeholderi, dintre care cel puțin unul ascuns (nu sponsor, nu client). Exemple de răspunsuri: Pod către insulă: locuitorii insulei, pescarii și transportatorii pe feribot (pierd venit), autoritățile de mediu, firmele de construcții, asigurători. Groapă de gunoi: vecinii, primăria, autorități de mediu, ONG-uri, firma de salubritate, fermieri din zonă. Spreadsheet open source: dezvoltatori voluntari, comunitatea, companii care îl adoptă, concurenți comerciali. Aplicație de monitorizare a masei corporale: utilizatori, medici/nutriționiști, magazinele de aplicații, autoritatea GDPR, investitori. OpenOffice pe Android: Google, comunitatea OpenOffice, utilizatori, producători de telefoane. Tranziție: pentru aplicația de masă corporală avem o matrice putere-interes pe slide-ul următor.");
     const ps = [
       { t: "Un pod către o insulă", i: ic.bridge, c: C.accent4 },
       { t: "O groapă de gunoi", i: ic.trash, c: C.accent3 },
@@ -577,8 +577,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Putere vs. interes: pe cine ascultăm?", "B", "1,5'", "Stakeholderi",
-      "B (1,5 min). Instrument practic derivat din ideea cursului că stakeholderii au influențe diferite și trebuie identificați și implicați. Exemplu aplicație de monitorizare a masei corporale. Cadranele: putere mare + interes mare = gestionează îndeaproape (sponsor); putere mare + interes mic = menține satisfăcut (magazinele de aplicații, autoritatea GDPR); putere mică + interes mare = informează (utilizatori, medici); putere mică + interes mic = monitorizează. Plasările sunt discutabile, deci ÎNTREBARE către sală: mutați pe cineva? De ce utilizatorii finali au 'putere mică' deși produsul e pentru ei (recenzii, abandon)?");
+    const s = lightSlide("Putere vs. interes: pe cine ascultăm?", "B", "1'", "Stakeholderi",
+      "B (1 min). Instrument practic derivat din ideea cursului că stakeholderii au influențe diferite și trebuie identificați și implicați. Exemplu aplicație de monitorizare a masei corporale. Cadranele: putere mare + interes mare = gestionează îndeaproape (sponsor); putere mare + interes mic = menține satisfăcut (magazinele de aplicații, autoritatea GDPR); putere mică + interes mare = informează (utilizatori, medici); putere mică + interes mic = monitorizează. Plasările sunt discutabile, deci ÎNTREBARE către sală: mutați pe cineva? De ce utilizatorii finali au 'putere mică' deși produsul e pentru ei (recenzii, abandon)?");
     const gx = 2.0;
     const gy = 1.2;
     const gw = 6.0;
@@ -637,8 +637,8 @@ async function build() {
   pres.addSection({ title: "Dezbatere" });
 
   {
-    const s = lightSlide("Un mic exercițiu de gândire", "AB", "2'", "Dezbatere",
-      "A + B (2 min). Încheiem cu o singură întrebare scurtă, care leagă tot ce am discutat. Cerem sălii să se gândească 20 de secunde la ultimul proiect de echipă care a mers prost (la facultate sau la muncă), apoi votează în poll ce a lipsit cel mai mult: un plan clar (Gantt, drum critic), implicarea unui stakeholder cheie, sau comunicarea în echipă. Arătăm rezultatul live și luăm 2 comentarii. Mesajul final: toate trei sunt probleme de management, nu de cod. Dacă mai rămâne timp, întrebăm: ce ați face diferit data viitoare?");
+    const s = lightSlide("Un mic exercițiu de gândire", "AB", "1,5'", "Dezbatere",
+      "A + B (1,5 min). Încheiem cu o singură întrebare scurtă, care leagă tot ce am discutat. Cerem sălii să se gândească 20 de secunde la ultimul proiect de echipă care a mers prost (la facultate sau la muncă), apoi votează în poll ce a lipsit cel mai mult: un plan clar (Gantt, drum critic), implicarea unui stakeholder cheie, sau comunicarea în echipă. Arătăm rezultatul live și luăm 2 comentarii. Mesajul final: toate trei sunt probleme de management, nu de cod. Dacă mai rămâne timp, întrebăm: ce ați face diferit data viitoare?");
     s.addShape(SH.ellipse, { x: 0.5, y: 1.35, w: 1.0, h: 1.0, fill: { color: C.accent1 }, line: { color: C.accent1, width: 0 }, objectName: "Cerc intrebare" });
     s.addImage({ data: icDark.bulb, x: 0.75, y: 1.6, w: 0.5, h: 0.5, objectName: "Icon intrebare" });
     txt(s, "Gândiți-vă la ultimul proiect de echipă care a mers prost.", { x: 1.8, y: 1.3, w: 7.7, h: 0.6, fontSize: 18, color: C.text2 });
@@ -659,8 +659,8 @@ async function build() {
   }
 
   {
-    const s = lightSlide("Cadrul de gestiune a proiectului", "AB", "1'", "Dezbatere",
-      "A + B (1 min). Rezumăm: cele 8 preocupări ale unui framework de dezvoltare software sunt chiar ce vom învăța în restul cursului: fezabilitate, scopuri, timp, costuri, controlul schimbărilor și configurații, calitate, riscuri, resurse umane. Gantt, CPM și PERT acoperă timpul; stakeholderii leagă scopul de oameni; Brooks atinge resursele umane. Cadrul trebuie să creeze viziune comună, să structureze lucrul progresiv, să reducă nesiguranța, să evidențieze abaterile, să asigure coerența și să motiveze echipa.");
+    const s = lightSlide("Cadrul de gestiune a proiectului", "AB", "0,5'", "Dezbatere",
+      "A + B (0,5 min). Rezumăm: cele 8 preocupări ale unui framework de dezvoltare software sunt chiar ce vom învăța în restul cursului: fezabilitate, scopuri, timp, costuri, controlul schimbărilor și configurații, calitate, riscuri, resurse umane. Gantt, CPM și PERT acoperă timpul; stakeholderii leagă scopul de oameni; Brooks atinge resursele umane. Cadrul trebuie să creeze viziune comună, să structureze lucrul progresiv, să reducă nesiguranța, să evidențieze abaterile, să asigure coerența și să motiveze echipa.");
     const pr = [
       { t: "Fezabilitate", i: ic.search, c: C.accent4 },
       { t: "Scopuri", i: ic.bullseye, c: C.accent2 },
@@ -700,7 +700,7 @@ async function build() {
     });
     txt(s, "Întrebări?", { x: 0.6, y: 4.1, w: 5, h: 0.7, fontSize: 34, bold: true, color: C.accent1, fontFace: "Cambria" });
     txt(s, "Mulțumim pentru participare", { x: 0.6, y: 4.8, w: 5, h: 0.3, fontSize: 13, color: C.accent6 });
-    s.addNotes("A + B (rezervă 0-1 min). Rezumăm cele 3 idei și deschidem pentru întrebări. Dacă timpul s-a consumat, spunem doar cele 3 idei și mulțumim.");
+    s.addNotes("A + B (0,5 min). Rezumăm cele 3 idei și deschidem pentru întrebări. Dacă timpul s-a consumat, spunem doar cele 3 idei și mulțumim.");
   }
 
   await pres.writeFile({ fileName: OUT });
